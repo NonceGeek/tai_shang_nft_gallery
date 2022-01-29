@@ -7,6 +7,7 @@ defmodule TaiShangNftGallery.NftContract do
 
   schema "nft_contract" do
     field :name, :string
+    field :description, :string
     field :addr, :string
     field :type, :string
     field :abi, {:array, :map}
@@ -52,6 +53,7 @@ defmodule TaiShangNftGallery.NftContract do
   @doc false
   def changeset(%Ele{} = ele, attrs) do
     ele
-    |> cast(attrs, [:name, :addr, :type, :abi, :chain_id])
+    |> cast(attrs, [:name, :description, :addr, :type, :abi, :chain_id, :last_sync_index])
+    |> unique_constraint(:name)
   end
 end

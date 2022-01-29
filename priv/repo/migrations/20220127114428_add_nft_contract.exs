@@ -4,6 +4,7 @@ defmodule TaiShangNftGallery.Repo.Migrations.AddNftContract do
   def change do
     create table :nft_contract do
       add :name, :string
+      add :description, :text
       add :addr, :string
       add :type, :string
       add :abi, {:array, :map}
@@ -13,5 +14,7 @@ defmodule TaiShangNftGallery.Repo.Migrations.AddNftContract do
 
       timestamps()
     end
+
+    create unique_index(:nft_contract, [:name])
   end
 end

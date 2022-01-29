@@ -5,7 +5,7 @@ defmodule TaiShangNftGallery.Repo.Migrations.AddChain do
     create table :chain do
       add :name, :string
       add :endpoint, :string
-
+      add :info, :map
       timestamps()
     end
 

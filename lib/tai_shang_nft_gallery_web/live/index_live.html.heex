@@ -1,0 +1,76 @@
+<form class="d-flex">
+    <input class="form-control me-2" type="search" placeholder="Enter Ur/Someone Addr to See U/Someone got(// TODO)" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Enter↵</button>
+</form>
+<div style="width:70%;float:left;">
+    <div>
+        <h3>Basic Info of NFT</h3>
+        <p><b>NAME: </b><%= @nft_contract.name%></p>
+        <p>
+            <b>ADDR: </b>
+            <a href={"#{@nft_contract.chain.info["contract"]}#{@nft_contract.addr}" }>
+                <%= @nft_contract.addr%>
+            </a>
+        </p>
+        <p><b> HODLER NUMBER: </b>
+            <%= @hodler_num %>
+        </p>
+        <p><b> NETWORK: </b>
+            <%= @nft_contract.chain.name%>
+        </p>
+        <p><b> DESCRIPTION: </b>
+        
+            <%= raw(Earmark.as_html!(
+                @nft_contract.description
+            ))%>
+        </p>
+    </div>
+    <hr>
+    <div>
+        <%= form_for :f, "#", [phx_change: :change_badge], fn f -> %>
+            <p>
+            <b>Badge NAME:</b>
+            <%= select f, :badge_name, @badge_names, value: @badges_name_selected %>
+            </p>
+            <p>
+                <b>NAME: </b> <%= @badge_selected.name %>
+            </p>
+            <p>
+                <b>DESCRIPTION: </b> <%= @badge_selected.description %>
+            </p>
+            <p>
+                <b>NFT LIST: </b> 
+                <%= for info <- @badge_selected.nft_info do %>
+                    <p><b>TOKEN ID: </b>
+                        <button 
+                            type="button"  
+                            phx-value-token_id={info.token_id}
+                            phx-click="select_nft" 
+                        >
+                            <%= info.token_id %>
+                        </button>
+                    </p> 
+                    <p><b>OWNER: </b><%= info.owner %></p> 
+                <% end %>
+            </p>
+        <% end %>
+    </div>
+
+</div>
+<div style="width:30%;float:left;">
+    <%=if is_nil(assigns[:nft_selected]) == false do %>
+        <b>TOKEN ID: </b><%= @nft_selected.token_id %>
+        <br>
+        <b>OWNER: </b><%= @nft_selected.owner %>
+        <br>
+        <b>BADGES: </b>
+        <br>
+            <%= Enum.map(@nft_selected.badge_id, fn badge_id ->  %>
+                <%= badge_id.badge.name %>&nbsp;&nbsp;
+            <%end)%>
+        <br>
+        <b> RAW NFT URI: </b>
+        <br>
+            <%=raw(@nft_selected.uri["img_parsed"]) %>
+    <%end%>
+</div>

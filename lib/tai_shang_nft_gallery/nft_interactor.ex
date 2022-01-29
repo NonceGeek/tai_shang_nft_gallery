@@ -12,6 +12,23 @@ defmodule TaiShangNftGallery.NftInteractor do
     owner_of: "ownerOf(uint256)",
   }
 
+  @spec_func %{
+    token_info: "getTokenInfo(uint256)"
+  }
+
+  def get_token_info(%{endpoint: endpoint}, contract_addr, token_id) do
+    data =
+      get_data(
+        @spec_func.token_info,
+        [token_id]
+      )
+    {:ok, value} =
+      Ethereumex.HttpClient.eth_call(%{
+        data: data,
+        to: contract_addr
+      }, @default_param_in_call, url: endpoint)
+    TypeTranslator.data_to_str(value)
+  end
   def get_token_by_index(%{endpoint: endpoint}, contract_addr, index) do
     data =
       get_data(

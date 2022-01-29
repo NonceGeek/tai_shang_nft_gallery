@@ -17,13 +17,14 @@ defmodule TaiShangNftGalleryWeb.Router do
   scope "/", TaiShangNftGalleryWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", IndexLive, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TaiShangNftGalleryWeb do
-  #   pipe_through :api
-  # end
+  scope "/tai_shang_nft_gallery/api/v1/", TaiShangNftGalleryWeb do
+    pipe_through :api
+    get "/sync", SyncerController, :sync
+  end
 
   # Enables LiveDashboard only for development
   #
@@ -33,11 +34,10 @@ defmodule TaiShangNftGalleryWeb.Router do
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
   if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: TaiShangNftGalleryWeb.Telemetry
+      # live_dashboard "/dashboard", metrics: TaiShangNftGalleryWeb.Telemetry
     end
   end
 

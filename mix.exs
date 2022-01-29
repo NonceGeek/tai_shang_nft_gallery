@@ -66,6 +66,9 @@ defmodule TaiShangNftGallery.MixProject do
 
       # handle_uri
       {:ex_url, "~> 1.4"},
+
+      # markdown
+      {:earmark, "~> 1.4"},
       #override
       {:ecto, "~> 3.7.1", override: true}
     ]

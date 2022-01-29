@@ -8,23 +8,70 @@
     <%= live_title_tag assigns[:page_title] || "TaiShangNftGallery", suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+
+    <link rel="stylesheet" href={Routes.static_path(@conn, "/assets/bootstrap.min.css")} />
+    <script type="text/javascript" src={Routes.static_path(@conn, "/assets/bootstrap.bundle.min.js")}></script>
+    <style>
+      a:link { 
+        text-decoration: none; 
+      } 
+      a:visited { 
+        text-decoration: none; 
+      } 
+      a:hover { 
+        text-decoration: underline; 
+      }
+    </style>
   </head>
   <body>
+    <div style="width: 60%;margin: 0 auto;">
+
     <header>
       <section class="container">
         <nav>
           <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
+            <li>
+              <a 
+                href="https://github.com/WeLightProject/tai_shang_nft_gallery"
+              >
+                View on Github
+              </a>
+            </li>
+            <li>
+              <a 
+                href="https://noncegeek.com"
+              >
+                Know NonceGeek
+              </a>
+
+            </li>
+            <li>
+              v0.5.0
+            </li>
           </ul>
         </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src={Routes.static_path(@conn, "/images/phoenix.png")} alt="Phoenix Framework Logo"/>
-        </a>
+        <%# <a href="https://phoenixframework.org/" class="phx-logo"> %>
+          <img style="max-width: 30%;" src={Routes.static_path(@conn, "/images/logo.svg")} alt="TaiShang Gallery Logo"/>
+
+        <%# </a> %>
+         
       </section>
     </header>
-    <%= @inner_content %>
+    
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Web3Dev</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <br>
+
+      <%= @inner_content %>
+    </div>
   </body>
 </html>

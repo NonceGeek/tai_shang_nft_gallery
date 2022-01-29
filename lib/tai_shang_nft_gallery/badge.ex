@@ -1,13 +1,15 @@
-defmodule TaiShangNftGallery.Chain do
+defmodule TaiShangNftGallery.Badge do
   use Ecto.Schema
   import Ecto.Changeset
-  alias TaiShangNftGallery.Chain, as: Ele
+  alias TaiShangNftGallery.Badge, as: Ele
   alias TaiShangNftGallery.Repo
+  alias TaiShangNftGallery.NftBadge
 
-  schema "chain" do
+  schema "badge" do
     field :name, :string
-    field :endpoint, :string
-    field :info, :map
+    field :description, :string
+    has_many :nft_id, NftBadge
+
     timestamps()
   end
 
@@ -15,6 +17,22 @@ defmodule TaiShangNftGallery.Chain do
     Repo.all(Ele)
   end
 
+  def preload(ele, key_list) do
+    %{nft_id: nft_badges} =
+      preload(ele)
+    nft_info =
+      Enum.map(nft_badges, fn %{nft: nft} ->
+        Enum.reduce(key_list, %{}, fn key, acc ->
+          Map.put(acc, key, Map.get(nft, key))
+        end)
+      end)
+    Map.put(ele, :nft_info, nft_info)
+  end
+  def preload(ele) do
+    Repo.preload(
+      ele,
+      [nft_id: :nft])
+  end
   def get_by_id(id) do
     Repo.get_by(Ele, id: id)
   end
@@ -42,7 +60,6 @@ defmodule TaiShangNftGallery.Chain do
   @doc false
   def changeset(%Ele{} = ele, attrs) do
     ele
-    |> cast(attrs, [:name, :endpoint, :info])
-    |> unique_constraint(:name)
+    |> cast(attrs, [:name, :description])
   end
 end
