@@ -17,7 +17,8 @@ alias TaiShangNftGallery.Chain
     name: "Moonbeam",
     endpoint: "https://rpc.api.moonbeam.network",
     info: %{
-      contract: "https://moonbeam.moonscan.io/address/"
+      contract: "https://moonbeam.moonscan.io/address/",
+      api_explorer: "https://api-moonbeam.moonscan.io/",
     }
   })
 
@@ -26,11 +27,21 @@ description =
   "Web3DevNFT has the following uses:\n\n"
   |> Kernel.<>("**0x01)** the Label NFT for Web3Dev@NonceGeek\n\n")
   |> Kernel.<>("**0x02)** one of the Character for TaiShangVerse@NonceGeek")
+abi =
+  "contracts/web3dev.abi"
+  |> File.read!()
+  |> Poison.decode!()
+
+  alias TaiShangNftGallery.ContractABI
+
+{:ok, %{id: id}} =
+  ContractABI.create(%{abi: abi})
 NftContract.create(%{
-  name: "web3dev",
-  type: "web3dev",
+  name: "Web3Dev",
+  type: "Web3Dev",
   addr: "0xb6FC950C4bC9D1e4652CbEDaB748E8Cdcfe5655F",
   description: description,
+  contract_abi_id: id,
   chain_id: id
 })
 

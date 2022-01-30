@@ -47,4 +47,8 @@ defmodule Utils.TypeTranslator do
     |> String.replace("0x", "")
     |> Base.decode16!(case: :mixed)
   end
+
+  def bin_to_addr(bin) do
+    "0x" <> Base.encode16(bin, case: :lower)
+  end
 end

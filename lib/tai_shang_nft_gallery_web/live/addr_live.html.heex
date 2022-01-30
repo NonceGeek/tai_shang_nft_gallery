@@ -1,0 +1,17 @@
+<%= for nft <- @nfts do %>
+    <div style="width:30%;">
+            <b>TOKEN ID: </b><%= nft.token_id %>
+            <br>
+            <b>OWNER: </b><%= nft.owner %>
+            <br>
+            <b>BADGES: </b>
+            <br>
+                <%= Enum.map(nft.badge_id, fn badge_id ->  %>
+                    <%= badge_id.badge.name %>&nbsp;&nbsp;
+                <%end)%>
+            <br>
+            <b> RAW NFT URI: </b>
+            <br>
+                <%=raw(nft.uri["img_parsed"]) %>
+    </div>
+<% end %>

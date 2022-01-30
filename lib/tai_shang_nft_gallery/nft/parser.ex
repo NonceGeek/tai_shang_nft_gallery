@@ -1,4 +1,4 @@
-defmodule TaiShangNftGallery.NftParser do
+defmodule TaiShangNftGallery.Nft.Parser do
   alias Utils.URIHandler
 
   @keys [

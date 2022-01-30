@@ -8,7 +8,6 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     {:ok, init(socket)}
   end
 
-
   @impl true
   def handle_event("change_badge", %{
       "f" => %{"badge_name" => badge_name}
@@ -36,14 +35,37 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     }
   end
 
-  def handle_event(_key, _params, socket) do
+  def handle_event("search", %{"addr" => addr}, socket) do
+    payload = Nft.check_owner(addr)
+    do_handle_event(payload, socket)
 
+  end
+
+  def handle_event(_key, _value, socket) do
     {:noreply, socket}
   end
 
+  def do_handle_event(payload, socket) when is_nil(payload) do
+    {
+      :noreply,
+      socket
+      |> put_flash(:error, "this addr has not any NFT for the Web3Dev.")
+    }
+  end
+
+  def do_handle_event(%{owner: owner}, socket) do
+    {
+      :noreply,
+      socket
+      |> redirect(to: Routes.addr_path(socket, :index, %{addr: owner}))
+    }
+  end
+
+
+
   def init(socket) do
     nft_contract = %{id: id} =
-      "web3dev"
+      "Web3Dev"
     |> NftContract.get_by_name()
       |> NftContract.preload()
     hodler_num =

@@ -18,12 +18,13 @@ defmodule TaiShangNftGalleryWeb.Router do
     pipe_through :browser
 
     live "/", IndexLive, :index
+    live "/addr", AddrLive, :index
   end
 
   # Other scopes may use custom stacks.
   scope "/tai_shang_nft_gallery/api/v1/", TaiShangNftGalleryWeb do
     pipe_through :api
-    get "/sync", SyncerController, :sync
+    # get "/sync", SyncerController, :sync
   end
 
   # Enables LiveDashboard only for development

@@ -1,7 +1,7 @@
-<form class="d-flex">
-    <input class="form-control me-2" type="search" placeholder="Enter Ur/Someone Addr to See U/Someone got(// TODO)" aria-label="Search">
+<%= form_for :search_f, "#", [phx_submit: :search, class: "d-flex"], fn _f -> %>
+    <input name="addr" class="form-control me-2" type="search" placeholder="Enter Ur/Someone Addr to See U/Someone got" aria-label="Search">
     <button class="btn btn-outline-success" type="submit">Enter↵</button>
-</form>
+<%end%>
 <div style="width:70%;float:left;">
     <div>
         <h3>Basic Info of NFT</h3>

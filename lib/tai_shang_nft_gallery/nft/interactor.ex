@@ -1,8 +1,8 @@
-defmodule TaiShangNftGallery.NftInteractor do
+defmodule TaiShangNftGallery.Nft.Interactor do
   @moduledoc """
     Interactor for Nft
   """
-  alias TaiShangNftGallery.NftParser
+  alias TaiShangNftGallery.Nft.Parser
   alias Utils.TypeTranslator
   @default_param_in_call "latest"
   @func %{
@@ -15,6 +15,8 @@ defmodule TaiShangNftGallery.NftInteractor do
   @spec_func %{
     token_info: "getTokenInfo(uint256)"
   }
+
+
 
   def get_token_info(%{endpoint: endpoint}, contract_addr, token_id) do
     data =
@@ -83,7 +85,7 @@ defmodule TaiShangNftGallery.NftInteractor do
       }, @default_param_in_call, url: endpoint)
     value
     |> TypeTranslator.data_to_str()
-    |> NftParser.parse_token_uri()
+    |> Parser.parse_token_uri()
   end
 
   # +-------------+

@@ -4,16 +4,17 @@ defmodule TaiShangNftGallery.NftContract do
   alias TaiShangNftGallery.NftContract, as: Ele
   alias TaiShangNftGallery.Repo
   alias TaiShangNftGallery.Chain
+  alias TaiShangNftGallery.ContractABI
 
   schema "nft_contract" do
     field :name, :string
     field :description, :string
     field :addr, :string
     field :type, :string
-    field :abi, {:array, :map}
-    field :last_sync_index, :integer, default: 0
+    field :last_block, :integer, default: 0
 
     belongs_to :chain, Chain
+    belongs_to :contract_abi, ContractABI
 
     timestamps()
   end
@@ -24,6 +25,10 @@ defmodule TaiShangNftGallery.NftContract do
 
   def preload(ele) do
     Repo.preload(ele, :chain)
+  end
+
+  def preload(ele, :deep) do
+    Repo.preload(ele, [:chain, :contract_abi])
   end
 
   def get_by_id(id) do
@@ -53,7 +58,8 @@ defmodule TaiShangNftGallery.NftContract do
   @doc false
   def changeset(%Ele{} = ele, attrs) do
     ele
-    |> cast(attrs, [:name, :description, :addr, :type, :abi, :chain_id, :last_sync_index])
+    |> cast(attrs, [:name, :description, :addr, :type, :chain_id, :last_block, :contract_abi_id])
     |> unique_constraint(:name)
+    |> update_change(:addr, &String.downcase/1)
   end
 end
