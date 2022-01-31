@@ -2,6 +2,8 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
   alias TaiShangNftGallery.Nft
   alias TaiShangNftGallery.Nft.Interactor
   alias Utils.TypeTranslator
+
+  require Logger
   def handle_tx(chain, nft_contract, from, to, value,
     {%{function: func_name}, data})  do
       do_handle_tx(
@@ -14,10 +16,11 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     :pass
   end
 
-  def do_handle_tx("transferFrom", _nft_contract, _from, _to, _value,
+  def do_handle_tx("transferFrom", _nft_contract, from, _to, _value,
     [_from_bin, to_bin, token_id], _chain) do
     # Change Owner
     to_str = TypeTranslator.bin_to_addr(to_bin)
+    Logger.info("Transfer NFT from #{from} to #{to_str}")
     nft = Nft.get_by_token_id(token_id)
     Nft.update(nft, %{token_id: token_id, owner: to_str})
   end
