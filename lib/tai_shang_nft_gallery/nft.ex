@@ -22,7 +22,7 @@ defmodule TaiShangNftGallery.Nft do
   def check_owner(owner) do
     Ele
     |> where([e], e.owner == ^String.downcase(owner))
-    |> Repo.one()
+    |> Repo.all()
   end
   def get_all() do
     Repo.all(Ele)

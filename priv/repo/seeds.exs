@@ -92,6 +92,13 @@ Badge.create(
 Badge.create(
   %{
     name: "writer",
-    description: "who created articles in Web3DevCamp."
+    description: "who created articles for Web3Dev."
+  }
+)
+
+Badge.create(
+  %{
+    name: "researcher",
+    description: "who participated in research work of Web3Dev."
   }
 )
