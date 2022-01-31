@@ -37,7 +37,7 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
 
   def handle_event("search", %{"addr" => addr}, socket) do
     payload = Nft.check_owner(addr)
-    do_handle_event(payload, socket)
+    do_handle_event(payload, addr, socket)
 
   end
 
@@ -45,7 +45,7 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     {:noreply, socket}
   end
 
-  def do_handle_event(payload, socket) when is_nil(payload) do
+  def do_handle_event(payload, _addr, socket) when is_nil(payload) do
     {
       :noreply,
       socket
@@ -53,11 +53,11 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     }
   end
 
-  def do_handle_event(%{owner: owner}, socket) do
+  def do_handle_event(_payload, addr, socket) do
     {
       :noreply,
       socket
-      |> redirect(to: Routes.addr_path(socket, :index, %{addr: owner}))
+      |> redirect(to: Routes.addr_path(socket, :index, %{addr: addr}))
     }
   end
 
