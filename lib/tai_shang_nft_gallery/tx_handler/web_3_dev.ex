@@ -16,8 +16,9 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     :pass
   end
 
-  def do_handle_tx("transferFrom", _nft_contract, from, _to, _value,
-    [_from_bin, to_bin, token_id], _chain) do
+  def do_handle_tx(func, _nft_contract, from, _to, _value,
+    [_from_bin, to_bin, token_id], _chain) when
+    func in ["safeTransferFrom", "transferFrom"] do
     # Change Owner
     to_str = TypeTranslator.bin_to_addr(to_bin)
     Logger.info("Transfer NFT from #{from} to #{to_str}")
