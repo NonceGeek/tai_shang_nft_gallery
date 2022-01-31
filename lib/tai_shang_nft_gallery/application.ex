@@ -4,7 +4,7 @@ defmodule TaiShangNftGallery.Application do
   @moduledoc false
 
   use Application
-
+  alias TaiShangNftGallery.SyncerServer
   @impl true
   def start(_type, _args) do
     children = [
@@ -15,9 +15,10 @@ defmodule TaiShangNftGallery.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: TaiShangNftGallery.PubSub},
       # Start the Endpoint (http/https)
-      TaiShangNftGalleryWeb.Endpoint
+      TaiShangNftGalleryWeb.Endpoint,
       # Start a worker by calling: TaiShangNftGallery.Worker.start_link(arg)
       # {TaiShangNftGallery.Worker, arg}
+      {SyncerServer, [nft_contract_id: 1]} # start to sync the default_nft_contract
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
