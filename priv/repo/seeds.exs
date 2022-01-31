@@ -102,3 +102,10 @@ Badge.create(
     description: "who participated in research work of Web3Dev."
   }
 )
+
+Badge.create(
+  %{
+    name: "artist",
+    description: "artist in Web3Dev."
+  }
+)

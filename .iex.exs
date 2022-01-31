@@ -1,4 +1,4 @@
-alias TaiShangNftGallery.{Chain, Nft, NftContract}
+alias TaiShangNftGallery.{Chain, Nft, NftContract, Badge}
 chain = Chain.get_by_id(1)
 nft_contract =
   1
