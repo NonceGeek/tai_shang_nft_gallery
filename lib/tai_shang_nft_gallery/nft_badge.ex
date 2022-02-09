@@ -16,6 +16,9 @@ defmodule TaiShangNftGallery.NftBadge do
     Repo.all(Ele, nft_id: nft_id)
   end
 
+  def delete(ele) do
+    Repo.delete!(ele)
+  end
   def get_by_nft_id_and_badge_id(nft_id, badge_id) do
     Ele
     |> where([e], e.nft_id == ^nft_id and e.badge_id == ^badge_id)

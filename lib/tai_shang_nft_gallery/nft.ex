@@ -109,6 +109,11 @@ defmodule TaiShangNftGallery.Nft do
   end
 
   def handle_badges(badge_names, nft_id) do
+    # delete all the badges first
+    nft_id
+    |> NftBadge.get_by_nft_id()
+    |> Enum.each(&(NftBadge.delete(&1)))
+    # update badges
     Enum.each(badge_names, fn name ->
       %{id: badge_id} = Badge.get_by_name(name)
       NftBadge.create(
