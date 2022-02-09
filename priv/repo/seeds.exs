@@ -12,7 +12,7 @@
 
 alias TaiShangNftGallery.Chain
 
-{:ok, %{id: id}} =
+{:ok, %{id: chain_id}} =
   Chain.create(%{
     name: "Moonbeam",
     endpoint: "https://rpc.api.moonbeam.network",
@@ -42,7 +42,7 @@ NftContract.create(%{
   addr: "0xb6FC950C4bC9D1e4652CbEDaB748E8Cdcfe5655F",
   description: description,
   contract_abi_id: id,
-  chain_id: id
+  chain_id: chain_id
 })
 
 alias TaiShangNftGallery.Badge
