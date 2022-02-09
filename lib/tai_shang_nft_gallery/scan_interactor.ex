@@ -13,13 +13,16 @@ defmodule TaiShangNftGallery.ScanInteractor do
     start_block,
     end_block,
     api_key, asc_or_desc \\ :asc) do
-    payload =
+    url =
       "#{api_explorer}api?module=account&action=txlist&address="
       |> Kernel.<>("#{contract_addr}&startblock=")
       |> Kernel.<>("#{start_block}&endblock=#{end_block}&sort=")
       |> Kernel.<>("#{asc_or_desc}&apikey=")
       |> Kernel.<>("#{api_key}")
-      ExHttp.get(payload)
+
+    Logger.info("call url: #{url}")
+    ExHttp.get(url)
+
   end
 
   def handle_res(%{"status" => "1", "message" => "OK", "result" => result}) do
