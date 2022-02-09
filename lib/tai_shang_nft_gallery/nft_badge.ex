@@ -13,8 +13,11 @@ defmodule TaiShangNftGallery.NftBadge do
 
 
   def get_by_nft_id(nft_id) do
-    Repo.all(Ele, nft_id: nft_id)
+    Ele
+    |> where([e], e.nft_id == ^nft_id)
+    |> Repo.all()
   end
+
 
   def delete(ele) do
     Repo.delete!(ele)
