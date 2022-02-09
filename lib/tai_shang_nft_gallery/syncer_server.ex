@@ -8,6 +8,7 @@ defmodule TaiShangNftGallery.SyncerServer do
   require Logger
 
   @sync_interval 600_000 # 10 minutes
+  @init_pending_time 5_000 # 5 sec
   # +-----------+
   # | GenServer |
   # +-----------+
@@ -15,7 +16,15 @@ defmodule TaiShangNftGallery.SyncerServer do
     GenServer.start_link(__MODULE__, state, name: :"#nft_syncer")
   end
 
-  def init([nft_contract_id: nft_contract_id]) do
+  @doc """
+    init -> hand_info(init) -> sync_routine
+  """
+  def init(state) do
+    Process.send_after(self(), :init, @init_pending_time)
+    {:ok, state}
+  end
+
+  def handle_info(:init,  [nft_contract_id: nft_contract_id]) do
     Logger.info("SyncerServer started yet.")
     nft_contract =
       nft_contract_id
@@ -23,8 +32,9 @@ defmodule TaiShangNftGallery.SyncerServer do
       |> NftContract.preload()
       state =
         [nft_contract: nft_contract]
+
     send(self(), :sync)
-    {:ok, state}
+    {:noreply, state}
   end
 
   def handle_info(:sync, [nft_contract: nft_contract] = state) do
