@@ -45,7 +45,8 @@ defmodule TaiShangNftGallery.Nft do
   def get_by_token_id_and_nft_contract_id(token_id, nft_contract_id) do
     Ele
     |> where([n], n.token_id == ^token_id and n.nft_contract_id == ^nft_contract_id)
-    |> Repo.one()
+    |> Repo.all()
+    |> Enum.fetch!(0)
   end
 
   # def create_with_no_repeat(
