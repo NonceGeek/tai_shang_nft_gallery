@@ -78,14 +78,31 @@ defmodule TaiShangNftGallery.Nft.Interactor do
         [token_id]
       )
 
-    {:ok, value} =
-      Ethereumex.HttpClient.eth_call(%{
-        data: data,
-        to: contract_addr
-      }, @default_param_in_call, url: endpoint)
-    value
+    # result =
+    #   Ethereumex.HttpClient.eth_call(%{
+    #     data: data,
+    #     to: contract_addr
+    #   }, @default_param_in_call, url: endpoint)
+    data
+    |> eth_call_repeat(contract_addr, @default_param_in_call, endpoint)
     |> TypeTranslator.data_to_str()
     |> Parser.parse_token_uri()
+  end
+
+  def eth_call_repeat(data, contract_addr, func_name, endpoint) do
+    result =
+      Ethereumex.HttpClient.eth_call(%{
+      data: data,
+      to: contract_addr
+      }, func_name, url: endpoint)
+
+    case result do
+     {:ok, value} ->
+        value
+      {:error, :timeout} ->
+        Process.sleep(1000) # wait 1 sec
+        eth_call_repeat(data, contract_addr, func_name, endpoint)
+    end
   end
 
   # +-------------+
