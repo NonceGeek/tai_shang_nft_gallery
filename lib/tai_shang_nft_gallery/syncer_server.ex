@@ -13,7 +13,7 @@ defmodule TaiShangNftGallery.SyncerServer do
   # | GenServer |
   # +-----------+
   def start_link(state) do
-    GenServer.start_link(__MODULE__, state, name: :"#nft_syncer")
+    GenServer.start_link(__MODULE__, state, name: :nft_syncer)
   end
 
   @doc """
