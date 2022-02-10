@@ -29,13 +29,19 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
   def do_handle_tx("claim", %{id: nft_c_id, addr: addr}, from, _to, _value, [token_id], chain) do
     # INIT Token
     uri = Interactor.get_token_uri(chain, addr, token_id)
-    Nft.create(
-      %{
-        uri: uri,
-        token_id: token_id,
-        owner: from,
-        nft_contract_id: nft_c_id
-    })
+
+    if is_nil(Nft.get_by_token_id(token_id)) == true do
+      Nft.create(
+        %{
+          uri: uri,
+          token_id: token_id,
+          owner: from,
+          nft_contract_id: nft_c_id
+      })
+    else
+      :pass
+    end
+
   end
   def do_handle_tx(
     "setTokenInfo",
