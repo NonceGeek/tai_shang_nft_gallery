@@ -7,7 +7,7 @@ defmodule TaiShangNftGallery.SyncerServer do
   use GenServer
   require Logger
 
-  @sync_interval 600_000 # 10 minutes
+  @sync_interval 60_000 # 1 minutes
   @init_pending_time 5_000 # 5 sec
   # +-----------+
   # | GenServer |
