@@ -109,3 +109,10 @@ Badge.create(
     description: "artist in Web3Dev."
   }
 )
+
+Badge.create(
+  %{
+    name: "puzzler",
+    description: "puzzle sovler for puzzles released by Web3Dev."
+  }
+)

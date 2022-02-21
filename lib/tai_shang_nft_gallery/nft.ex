@@ -8,6 +8,8 @@ defmodule TaiShangNftGallery.Nft do
   import Ecto.{Changeset, Query}
   require Logger
 
+  @int_limit 2147483647
+
   schema "nft" do
     field :token_id, :integer
     field :uri, :map
@@ -43,10 +45,14 @@ defmodule TaiShangNftGallery.Nft do
   end
 
   def get_by_token_id_and_nft_contract_id(token_id, nft_contract_id) do
-    Ele
-    |> where([n], n.token_id == ^token_id and n.nft_contract_id == ^nft_contract_id)
-    |> Repo.all()
-    |> Enum.fetch!(0)
+    if token_id <= @int_limit do
+      Ele
+      |> where([n], n.token_id == ^token_id and n.nft_contract_id == ^nft_contract_id)
+      |> Repo.all()
+      |> Enum.fetch!(0)
+    else
+      nil
+    end
   end
 
   # def create_with_no_repeat(
@@ -74,9 +80,13 @@ defmodule TaiShangNftGallery.Nft do
   end
 
   def get_by_token_id(token_id) do
-    Ele
-    |> Repo.get_by(token_id: token_id)
-    |> preload()
+    if token_id <= @int_limit do
+      Ele
+      |> Repo.get_by(token_id: token_id)
+      |> preload()
+    else
+      nil
+    end
   end
 
   def create(%{badges: badge_names} = attrs, :with_badges) do
@@ -99,7 +109,7 @@ defmodule TaiShangNftGallery.Nft do
   end
 
   def create(%{token_id: token_id} = attrs) do
-    if token_id <= 2147483647 do
+    if token_id <= @int_limit do
       %Ele{}
       |> Ele.changeset(attrs)
       |> Repo.insert()
@@ -136,14 +146,14 @@ defmodule TaiShangNftGallery.Nft do
         end
       rescue
         error ->
-          Logger.error("update failed at update NftBadge!reason: #{inspect(error)}")
-          Repo.rollback("update failed at update NftBadge!reason: #{inspect(error)}")
+          Logger.error("update failed at update NftBadge!reason: #{inspect(badge_names)}")
+          Repo.rollback("update failed at update NftBadge!reason: #{inspect(badge_names)}")
       end
     end)
   end
 
   def update(%Ele{} = ele, %{token_id: token_id} = attrs) do
-    if token_id <= 2147483647 do
+    if token_id <= @int_limit do
       ele
       |> changeset(attrs)
       |> Repo.update()
