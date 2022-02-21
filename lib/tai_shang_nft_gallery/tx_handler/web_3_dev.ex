@@ -53,8 +53,8 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     token_id
     |> Nft.get_by_token_id_and_nft_contract_id(nft_c_id)
     |> Nft.update(%{
-        badges: Poison.decode!(badges_raw), uri: uri
-    }, :with_badges)
+        badges: Poison.decode!(badges_raw), token_id: token_id, uri: uri
+    }, :with_badges) # token_id is necessary for judge
   end
   def do_handle_tx(_others, _, _, _, _, _, _) do
     {:ok, "pass"}
