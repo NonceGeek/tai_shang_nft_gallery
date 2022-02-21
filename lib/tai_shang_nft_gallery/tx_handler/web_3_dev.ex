@@ -45,8 +45,8 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
   end
   def do_handle_tx(
     "setTokenInfo",
-    %{id: nft_c_id}, _from, _to, _value,
-    [token_id, badges_raw], _chain) do
+    %{id: nft_c_id, addr: addr}}, _from, _to, _value,
+    [token_id, badges_raw], chain) do
     # UPDATE Badges & URI
     uri = Interactor.get_token_uri(chain, addr, token_id)
 
