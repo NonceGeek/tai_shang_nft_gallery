@@ -31,13 +31,18 @@ defmodule TaiShangNftGallery.SyncerServer do
       |> NftContract.get_by_id()
       |> NftContract.preload()
       state =
-        [nft_contract: nft_contract]
+        [nft_contract_id: nft_contract_id]
 
     send(self(), :sync)
     {:noreply, state}
   end
 
-  def handle_info(:sync, [nft_contract: nft_contract] = state) do
+  def handle_info(:sync, [nft_contract_id: nft_contract_id] = state) do
+    # reload nft_contract
+    nft_contract =
+      nft_contract_id
+      |> NftContract.get_by_id()
+      |> NftContract.preload()
     Syncer.sync(nft_contract.chain, nft_contract)
     sync_after_interval()
     {:noreply, state}
