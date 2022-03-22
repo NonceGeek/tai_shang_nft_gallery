@@ -65,9 +65,22 @@
         <br>
         <b>BADGES: </b>
         <br>
-            <%= Enum.map(@nft_selected.badge_id, fn badge_id ->  %>
-                <%= badge_id.badge.name %>&nbsp;&nbsp;
-            <%end)%>
+            <%= 
+            badges =
+                Enum.map(@nft_selected.badge_id, fn badge_id -> 
+                badge_id.badge.name
+                end)
+            
+            badges
+            |> Enum.uniq()
+            |> Enum.map(fn ele ->
+                num = Enum.count(badges, &(&1==ele))
+                {ele, num}
+            end)
+            |> Enum.into(%{})
+            |> ExStructTranslator.to_atom_struct()
+            |> inspect()
+            %>
         <br>
         <b> RAW NFT URI: </b>
         <br>

@@ -118,20 +118,25 @@ defmodule TaiShangNftGallery.Nft do
     end
   end
 
-  def handle_badges(badge_names, nft_id) do
+  def handle_badges(badges_map, nft_id) do
     # delete all the badges by nft_id first
     nft_id
     |> NftBadge.get_by_nft_id()
     |> Enum.each(&(NftBadge.delete(&1)))
-    # update badges
-    Enum.each(badge_names, fn name ->
-      %{id: badge_id} = Badge.get_by_name(name)
-      NftBadge.create(
-        %{nft_id: nft_id, badge_id: badge_id}, :no_repeat)
+
+    Enum.each(badges_map, fn {badge, times} ->
+      %{id: badge_id} = Badge.get_by_name(badge)
+
+      # repeat times
+      Enum.each(1..times, fn _times ->
+        NftBadge.create(
+          %{nft_id: nft_id, badge_id: badge_id})
+      end)
+
     end)
   end
 
-  def update(ele, %{badges: badge_names} = attrs, :with_badges) do
+  def update(ele, %{badges: badges_map} = attrs, :with_badges) do
     Repo.transaction(fn ->
       try do
         res =
@@ -142,12 +147,12 @@ defmodule TaiShangNftGallery.Nft do
               Logger.error("update failed at update Nft!reason: #{inspect(payload)}")
               Repo.rollback("update failed at update Nft!reason: #{inspect(payload)}")
           {:ok, %{id: id}} ->
-            handle_badges(badge_names, id)
+            handle_badges(badges_map, id)
         end
       rescue
         error ->
-          Logger.error("update failed at update NftBadge!reason: #{inspect(badge_names)}")
-          Repo.rollback("update failed at update NftBadge!reason: #{inspect(badge_names)}")
+          Logger.error("update failed at update NftBadge!reason: #{inspect(error)}")
+          Repo.rollback("update failed at update NftBadge!reason: #{inspect(error)}")
       end
     end)
   end

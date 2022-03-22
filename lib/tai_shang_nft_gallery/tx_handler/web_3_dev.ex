@@ -43,6 +43,8 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     end
 
   end
+
+
   def do_handle_tx(
     "setTokenInfo",
     %{id: nft_c_id, addr: addr}, _from, _to, _value,
@@ -53,10 +55,46 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     token_id
     |> Nft.get_by_token_id_and_nft_contract_id(nft_c_id)
     |> Nft.update(%{
-        badges: Poison.decode!(badges_raw), token_id: token_id, uri: uri
+        badges: parse_badge(badges_raw), token_id: token_id, uri: uri
     }, :with_badges) # token_id is necessary for judge
   end
   def do_handle_tx(_others, _, _, _, _, _, _) do
     {:ok, "pass"}
+  end
+
+  # parse the list of badge
+  def parse_badge(badges_raw) do
+    all_badges =
+      get_all_badges(badges_raw)
+    all_nums =
+      get_all_badge_nums(badges_raw)
+    all_badges
+    |> Enum.zip(all_nums)
+    |> Enum.into(%{})
+  end
+
+  def get_all_badges(badges_raw) do
+    badges_raw
+    |> String.replace("*", "")
+    |> String.replace( ~r/\d+/, "")
+    |> Poison.decode!()
+  end
+
+  def get_all_badge_nums(badges_raw) do
+    badges_raw
+    |> String.split(",")
+    |> Enum.map(fn ele ->
+      ele
+      |> String.replace(~r/[^\d]/, "")
+      |> handle_num()
+    end)
+  end
+
+  defp handle_num(num) when num == "" do
+    1
+  end
+
+  defp handle_num(num) do
+    String.to_integer(num)
   end
 end
