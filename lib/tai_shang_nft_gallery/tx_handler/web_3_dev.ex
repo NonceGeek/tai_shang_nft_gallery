@@ -49,14 +49,19 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     "setTokenInfo",
     %{id: nft_c_id, addr: addr}, _from, _to, _value,
     [token_id, badges_raw], chain) do
-    # UPDATE Badges & URI
-    uri = Interactor.get_token_uri(chain, addr, token_id)
+    try do
+      # UPDATE Badges & URI
+      uri = Interactor.get_token_uri(chain, addr, token_id)
 
-    token_id
-    |> Nft.get_by_token_id_and_nft_contract_id(nft_c_id)
-    |> Nft.update(%{
-        badges: parse_badge(badges_raw), token_id: token_id, uri: uri
-    }, :with_badges) # token_id is necessary for judge
+      token_id
+      |> Nft.get_by_token_id_and_nft_contract_id(nft_c_id)
+      |> Nft.update(%{
+          badges: parse_badge(badges_raw), token_id: token_id, uri: uri
+      }, :with_badges) # token_id is necessary for judge
+    rescue
+      _ ->
+        :pass
+    end
   end
   def do_handle_tx(_others, _, _, _, _, _, _) do
     {:ok, "pass"}

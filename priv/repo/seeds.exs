@@ -23,6 +23,9 @@ alias TaiShangNftGallery.Chain
   })
 
 alias TaiShangNftGallery.NftContract
+
+# --- init web3dev nft
+
 description =
   "Web3DevNFT has the following uses:\n\n"
   |> Kernel.<>("**0x01)** the Label NFT for Web3Dev@NonceGeek\n\n")
@@ -32,7 +35,7 @@ abi =
   |> File.read!()
   |> Poison.decode!()
 
-  alias TaiShangNftGallery.ContractABI
+alias TaiShangNftGallery.ContractABI
 
 {:ok, %{id: id}} =
   ContractABI.create(%{abi: abi})
@@ -44,6 +47,11 @@ NftContract.create(%{
   contract_abi_id: id,
   chain_id: chain_id
 })
+
+# --- init map nft
+
+
+# --- init badges
 
 alias TaiShangNftGallery.Badge
 
