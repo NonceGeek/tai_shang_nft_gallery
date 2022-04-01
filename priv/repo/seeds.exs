@@ -11,6 +11,8 @@
 # and so on) as they will fail if something goes wrong.
 
 alias TaiShangNftGallery.Chain
+alias TaiShangNftGallery.Airdrop
+alias TaiShangNftGallery.Users.User
 
 {:ok, %{id: chain_id}} =
   Chain.create(%{
@@ -19,6 +21,7 @@ alias TaiShangNftGallery.Chain
     info: %{
       contract: "https://moonbeam.moonscan.io/address/",
       api_explorer: "https://api-moonbeam.moonscan.io/",
+      tx: "https://moonbeam.moonscan.io/tx/"
     }
   })
 
@@ -124,3 +127,49 @@ Badge.create(
     description: "puzzle sovler for puzzles released by Web3Dev."
   }
 )
+
+Airdrop.create(%{
+  description: "Testing 1",
+  related_link: "Link 1",
+  sum: 100,
+  paid_for: [
+    %{
+      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
+      money: 5,
+      unit: "usdc"
+    },
+    %{
+      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
+      money: 10,
+      unit: "usdc"
+    }
+  ],
+  tx_ids: ["tx1", "tx2"],
+  chain_id: chain_id
+})
+
+Airdrop.create(%{
+  description: "Testing 2",
+  related_link: "Link 2",
+  sum: 200,
+  paid_for: [
+    %{
+      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
+      money: 15,
+      unit: "usdc"
+    },
+    %{
+      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
+      money: 20,
+      unit: "usdc"
+    }
+  ],
+  tx_ids: ["tx3", "tx4"],
+  chain_id: chain_id
+})
+
+User.create_admin(%{
+  email: "chengusky@gmail.com",
+  password: "1234567890",
+  password_confirmation: "1234567890"
+})

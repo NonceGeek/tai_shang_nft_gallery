@@ -1,0 +1,60 @@
+<h1>Listing Airdrops</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.airdrop_index_path(@socket, :index)}>
+    <.live_component
+      module={TaiShangNftGalleryWeb.AirdropLive.FormComponent}
+      id={@airdrop.id || :new}
+      title={@page_title}
+      action={@live_action}
+      airdrop={@airdrop}
+      return_to={Routes.airdrop_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Related link</th>
+      <th>Sum</th>
+      <th>Paid for</th>
+      <th>Tx ids</th>
+      <th>Chain</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="airdrops">
+    <%= for airdrop <- @airdrops do %>
+      <tr id={"airdrop-#{airdrop.id}"}>
+        <td><%= airdrop.description %></td>
+        <td><%= airdrop.related_link %></td>
+        <td><%= airdrop.sum %></td>
+        <td>
+          <table>
+            <tbody>
+            <%= for paid <- airdrop.paid_for do %>
+              <tr>
+                <td><%= paid["addr"] %></td>
+                <td><%= paid["money"] %></td>
+                <td><%= paid["unit"] %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </td>
+        <td><%= raw(Enum.join(Enum.map(airdrop.tx_ids, fn tx_id -> "<a href=\"#{airdrop.chain.info["tx"] <> tx_id}\">#{tx_id}</a>" end), "<br><br>")) %></td>
+        <td><%= airdrop.chain.name %></td>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.airdrop_show_path(@socket, :show, airdrop) %></span>
+          <span><%= live_patch "Edit", to: Routes.airdrop_index_path(@socket, :edit, airdrop) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: airdrop.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Airdrop", to: Routes.airdrop_index_path(@socket, :new) %></span>

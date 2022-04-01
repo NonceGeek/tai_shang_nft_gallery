@@ -1,5 +1,6 @@
 defmodule TaiShangNftGalleryWeb.Router do
   use TaiShangNftGalleryWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -14,11 +15,37 @@ defmodule TaiShangNftGalleryWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", TaiShangNftGalleryWeb do
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  pipeline :admin do
+    plug TaiShangNftGalleryWeb.EnsureRolePlug, :admin
+  end
+
+  scope "/" do
     pipe_through :browser
+
+    pow_routes()
+  end
+
+  scope "/", TaiShangNftGalleryWeb do
+    pipe_through [:browser]
 
     live "/", IndexLive, :index
     live "/addr", AddrLive, :index
+  end
+
+  scope "/airdrops", TaiShangNftGalleryWeb do
+    pipe_through [:browser, :protected, :admin]
+
+    live "/", AirdropLive.Index, :index
+    live "/new", AirdropLive.Index, :new
+    live "/:id/edit", AirdropLive.Index, :edit
+
+    live "/:id", AirdropLive.Show, :show
+    live "/:id/show/edit", AirdropLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

@@ -55,7 +55,6 @@
             </p>
         <% end %>
     </div>
-
 </div>
 <div style="width:30%;float:left;">
     <%=if is_nil(assigns[:nft_selected]) == false do %>
@@ -86,4 +85,52 @@
         <br>
             <%=raw(@nft_selected.uri["img_parsed"]) %>
     <%end%>
+</div>
+<div style="width:100%;">
+<hr>
+<h1>Airdrops</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Related link</th>
+      <th>Sum</th>
+      <th>
+        <table style="margin: 0">
+          <tbody>
+            <tr>
+              <td>Addr</td>
+              <td>Money</td>
+              <td>Unit</td>
+            </tr>
+          </tbody>
+        </table>
+      </th>
+      <th>Tx ids</th>
+    </tr>
+  </thead>
+  <tbody id="airdrops">
+    <%= for airdrop <- @airdrops do %>
+      <tr id={"airdrop-#{airdrop.id}"}>
+        <td><%= airdrop.description %></td>
+        <td><%= airdrop.related_link %></td>
+        <td><%= airdrop.sum %></td>
+        <td>
+          <table>
+            <tbody>
+            <%= for paid <- airdrop.paid_for do %>
+              <tr>
+                <td><%= paid["addr"] %></td>
+                <td><%= paid["money"] %></td>
+                <td><%= paid["unit"] %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </td>
+        <td><%= raw(Enum.join(Enum.map(airdrop.tx_ids, fn tx_id -> "<a href=\"#{@nft_contract.chain.info["tx"] <> tx_id}\">#{tx_id}</a>" end), "<br><br>")) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 </div>
