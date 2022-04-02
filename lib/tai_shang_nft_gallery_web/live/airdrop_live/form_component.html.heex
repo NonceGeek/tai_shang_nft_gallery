@@ -26,14 +26,20 @@
     <%= error_tag f, :sum %>
   
     <%= label f, :paid_for %>
-    <%= textarea f, :paid_for %>
+    <a class="add-form-field" phx-target={@myself} phx-click="add_paid_for" title="Add Paid">Add Paid</a>
+    <%= live_component TaiShangNftGalleryWeb.AirdropLive.PaidForInput,
+      airdrop: @airdrop,
+      target: @myself,
+      editable: true
+    %>
     <%= error_tag f, :paid_for %>
   
     <%= label f, :tx_ids %>
     <a class="add-form-field" phx-target={@myself} phx-click="add_tx_id" title="Add Transaction">Add Transaction</a>
     <%= live_component TaiShangNftGalleryWeb.AirdropLive.ListOfStringInput,
       airdrop: @airdrop,
-      target: @myself
+      target: @myself,
+      editable: true
     %>
     <%= error_tag f, :tx_ids %>
   

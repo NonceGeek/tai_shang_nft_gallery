@@ -1,18 +1,5 @@
 <h1>Show Airdrop</h1>
 
-<%= if @live_action in [:edit] do %>
-  <.modal return_to={Routes.airdrop_show_path(@socket, :show, @airdrop)}>
-    <.live_component
-      module={TaiShangNftGalleryWeb.AirdropLive.FormComponent}
-      id={@airdrop.id}
-      title={@page_title}
-      action={@live_action}
-      airdrop={@airdrop}
-      return_to={Routes.airdrop_show_path(@socket, :show, @airdrop)}
-    />
-  </.modal>
-<% end %>
-
 <ul>
 
   <li>
@@ -37,16 +24,18 @@
 </ul>
 
 <strong>Paid for:</strong>
-<div>
-  <code>
-  <%= raw(Jason.Formatter.pretty_print_to_iodata(Jason.encode!(@airdrop.paid_for), line_separator: "<br>", indent: "&nbsp;&nbsp;")) %>
-  </code>
-</div>
+<%= live_component TaiShangNftGalleryWeb.AirdropLive.PaidForInput,
+  airdrop: @airdrop,
+  target: "",
+  editable: false
+%>
 
 <strong>Tx ids:</strong>
-<div>
-  <%= raw(Enum.join(Enum.map(@airdrop.tx_ids, fn tx_id -> "<a href=\"#{@airdrop.chain.info["tx"] <> tx_id}\">#{tx_id}</a>" end), "<br><br>")) %>
-</div>
+<%= live_component TaiShangNftGalleryWeb.AirdropLive.ListOfStringInput,
+  airdrop: @airdrop,
+  target: "",
+  editable: false
+%>
 
 <span><%= live_patch "Edit", to: Routes.airdrop_show_path(@socket, :edit, @airdrop), class: "button" %></span> |
 <span><%= live_redirect "Back", to: Routes.airdrop_index_path(@socket, :index) %></span>

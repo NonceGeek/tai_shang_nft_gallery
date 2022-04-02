@@ -4,24 +4,13 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
   alias TaiShangNftGallery.Airdrop
   alias TaiShangNftGallery.Chain
 
-  defp format_json(airdrop, field) do
-    val = Map.get(airdrop, field)
-    if(val == nil, do: val, else: Jason.Formatter.pretty_print_to_iodata(Jason.encode!(val)))
-  end
-
   @impl true
   def update(%{airdrop: airdrop} = assigns, socket) do
-    changeset = airdrop
-      |> Airdrop.change_airdrop()
-      |> Ecto.Changeset.put_change(:paid_for, format_json(airdrop, :paid_for))
-
-    chains = Chain.get_all()
-
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)
-     |> assign(:chains, Enum.map(chains, fn chain -> {chain.name, chain.id} end))
+     |> assign(:changeset, Airdrop.change_airdrop(airdrop))
+     |> assign(:chains, Enum.map(Chain.get_all(), fn chain -> {chain.name, chain.id} end))
     }
 
   end
@@ -38,6 +27,51 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
 
   def handle_event("save", %{"airdrop" => airdrop_params}, socket) do
     save_airdrop(socket, socket.assigns.action, airdrop_params)
+  end
+
+  def handle_event("remove_paid_for", %{"key" => tx_idx}, socket) do
+    airdrop = socket.assigns.airdrop
+    paid_for = List.delete_at(airdrop.paid_for, String.to_integer(tx_idx))
+    airdrop = Map.put(airdrop, :paid_for, paid_for)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
+  def handle_event("add_paid_for", _, socket) do
+    airdrop = socket.assigns.airdrop
+    paid_for = Enum.concat(airdrop.paid_for, [%{}])
+    airdrop = Map.put(airdrop, :paid_for, paid_for)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
+  defp on_paid_for_field_update(socket, field, %{"key" => idx, "value" => new_value}) do
+    airdrop = socket.assigns.airdrop
+    idx = String.to_integer(idx)
+
+    paid_info = Enum.at(airdrop.paid_for, idx)
+    paid_for = List.replace_at(airdrop.paid_for, idx, Map.put(paid_info, field, new_value))
+    airdrop = Map.put(airdrop, :paid_for, paid_for)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
+  def handle_event("addr_update", update_info, socket) do
+    on_paid_for_field_update(socket, "addr", update_info)
+  end
+
+  def handle_event("money_update", update_info, socket) do
+    on_paid_for_field_update(socket, "money", update_info)
+  end
+
+  def handle_event("unit_update", update_info, socket) do
+    on_paid_for_field_update(socket, "unit", update_info)
   end
 
   def handle_event("remove_tx_id", %{"key" => tx_idx}, socket) do
@@ -70,9 +104,24 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
     }
   end
 
-  defp convert_json(airdrop_params, field) do
+  defp convert_paid_for(airdrop_params) do
+    paid_for = Map.get(airdrop_params, "paid_for")
+
+    paid_for_json = paid_for
+    |> Map.keys()
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.sort()
+    |> Enum.map(fn idx ->
+      [addr, money, unit] = Map.get(paid_for, Integer.to_string(idx))
+
+      %{}
+      |> Map.put("addr", addr)
+      |> Map.put("money", money)
+      |> Map.put("unit", unit)
+    end)
+
     airdrop_params
-    |> Map.put(field, Jason.decode!(Map.get(airdrop_params, field)))
+    |> Map.put("paid_for", paid_for_json)
   end
 
   defp remove_empty_txn_id(airdrop_params) do
@@ -90,8 +139,8 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
 
   defp convert_before_save(airdrop_params) do
     airdrop_params
-    |> convert_json("paid_for")
-    |> remove_empty_txn_id
+    |> convert_paid_for()
+    |> remove_empty_txn_id()
   end
 
   defp save_airdrop(socket, :edit, airdrop_params) do

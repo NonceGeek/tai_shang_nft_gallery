@@ -9,10 +9,10 @@ defmodule TaiShangNftGallery.Airdrop do
 
   schema "airdrops" do
     field :description, :string
-    field :paid_for, {:array, :map}
+    field :paid_for, {:array, :map}, default: []
     field :related_link, :string
     field :sum, :integer
-    field :tx_ids, {:array, :string}
+    field :tx_ids, {:array, :string}, default: []
     belongs_to :chain, Chain
 
     timestamps()
