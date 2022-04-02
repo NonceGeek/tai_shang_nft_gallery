@@ -30,7 +30,11 @@
     <%= error_tag f, :paid_for %>
   
     <%= label f, :tx_ids %>
-    <%= textarea f, :tx_ids %>
+    <a class="add-form-field" phx-target={@myself} phx-click="add_tx_id" title="Add Transaction">Add Transaction</a>
+    <%= live_component TaiShangNftGalleryWeb.AirdropLive.ListOfStringInput,
+      airdrop: @airdrop,
+      target: @myself
+    %>
     <%= error_tag f, :tx_ids %>
   
     <div>

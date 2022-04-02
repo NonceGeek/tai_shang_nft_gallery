@@ -91,8 +91,9 @@ defmodule TaiShangNftGallery.Airdrop do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update(%Airdrop{} = airdrop, attrs) do
-    airdrop
+  def update(airdrop_id, attrs) do
+    airdrop_id
+    |> get!()
     |> Airdrop.changeset(attrs)
     |> Repo.update()
   end

@@ -9,17 +9,11 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
     if(val == nil, do: val, else: Jason.Formatter.pretty_print_to_iodata(Jason.encode!(val)))
   end
 
-  defp format_list(airdrop, field) do
-    val = Map.get(airdrop, field)
-    if(val == nil, do: val, else: Enum.join(val, ","))
-  end
-
   @impl true
   def update(%{airdrop: airdrop} = assigns, socket) do
     changeset = airdrop
       |> Airdrop.change_airdrop()
       |> Ecto.Changeset.put_change(:paid_for, format_json(airdrop, :paid_for))
-      |> Ecto.Changeset.put_change(:tx_ids, format_list(airdrop, :tx_ids))
 
     chains = Chain.get_all()
 
@@ -46,24 +40,62 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
     save_airdrop(socket, socket.assigns.action, airdrop_params)
   end
 
+  def handle_event("remove_tx_id", %{"key" => tx_idx}, socket) do
+    airdrop = socket.assigns.airdrop
+    tx_ids = List.delete_at(airdrop.tx_ids, String.to_integer(tx_idx))
+    airdrop = Map.put(airdrop, :tx_ids, tx_ids)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
+  def handle_event("add_tx_id", _, socket) do
+    airdrop = socket.assigns.airdrop
+    tx_ids = Enum.concat(airdrop.tx_ids, [""])
+    airdrop = Map.put(airdrop, :tx_ids, tx_ids)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
+  def handle_event("tx_update", %{"key" => idx, "value" => new_tx_id}, socket) do
+    airdrop = socket.assigns.airdrop
+    tx_ids = List.replace_at(airdrop.tx_ids, String.to_integer(idx), new_tx_id)
+    airdrop = Map.put(airdrop, :tx_ids, tx_ids)
+
+    {:noreply, socket
+      |> assign(:airdrop, airdrop)
+    }
+  end
+
   defp convert_json(airdrop_params, field) do
     airdrop_params
     |> Map.put(field, Jason.decode!(Map.get(airdrop_params, field)))
   end
 
-  defp convert_list(airdrop_params, field) do
-    airdrop_params
-    |> Map.put(field, String.split(Map.get(airdrop_params, field), ","))
+  defp remove_empty_txn_id(airdrop_params) do
+    data = airdrop_params
+      |> Map.get("tx_ids")
+      |> Enum.map(fn each ->
+        String.trim(each)
+      end)
+      |> Enum.reject(fn each ->
+        each == ""
+      end)
+
+    Map.put(airdrop_params, "tx_ids", data)
   end
 
   defp convert_before_save(airdrop_params) do
     airdrop_params
     |> convert_json("paid_for")
-    |> convert_list("tx_ids")
+    |> remove_empty_txn_id
   end
 
   defp save_airdrop(socket, :edit, airdrop_params) do
-    case Airdrop.update(socket.assigns.airdrop, convert_before_save(airdrop_params)) do
+    case Airdrop.update(socket.assigns.airdrop.id, convert_before_save(airdrop_params)) do
       {:ok, _airdrop} ->
         {:noreply,
          socket
