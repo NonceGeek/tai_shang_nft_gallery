@@ -1,0 +1,41 @@
+<h1>Show Airdrop</h1>
+
+<ul>
+
+  <li>
+    <strong>Chain:</strong>
+    <%= @airdrop.chain.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @airdrop.description %>
+  </li>
+
+  <li>
+    <strong>Related link:</strong>
+    <%= @airdrop.related_link %>
+  </li>
+
+  <li>
+    <strong>Sum:</strong>
+    <%= @airdrop.sum %>
+  </li>
+</ul>
+
+<strong>Paid for:</strong>
+<%= live_component TaiShangNftGalleryWeb.AirdropLive.PaidForInput,
+  airdrop: @airdrop,
+  target: "",
+  editable: false
+%>
+
+<strong>Tx ids:</strong>
+<%= live_component TaiShangNftGalleryWeb.AirdropLive.ListOfStringInput,
+  airdrop: @airdrop,
+  target: "",
+  editable: false
+%>
+
+<span><%= live_patch "Edit", to: Routes.airdrop_show_path(@socket, :edit, @airdrop), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.airdrop_index_path(@socket, :index) %></span>

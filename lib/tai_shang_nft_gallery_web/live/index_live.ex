@@ -1,6 +1,6 @@
 defmodule TaiShangNftGalleryWeb.IndexLive do
   use TaiShangNftGalleryWeb, :live_view
-  alias TaiShangNftGallery.{Badge, Nft, NftContract}
+  alias TaiShangNftGallery.{Badge, Nft, NftContract, Airdrop}
 
   @default_badge "noncegeeker"
   @impl true
@@ -78,6 +78,9 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
       @default_badge
       |> Badge.get_by_name()
       |> Badge.preload([:token_id, :owner])
+    airdrops =
+      Airdrop.list_by_chain_id(nft_contract.chain.id)
+
     socket
     |> assign(nft_selected: nft)
     |> assign(nft_contract: nft_contract)
@@ -85,5 +88,6 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     |> assign(badge_names: badge_names)
     |> assign(badges_name_selected: @default_badge)
     |> assign(badge_selected: badge_info_default)
+    |> assign(airdrops: airdrops)
   end
 end
