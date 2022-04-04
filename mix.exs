@@ -56,7 +56,7 @@ defmodule TaiShangNftGallery.MixProject do
 
       # http
       {:httpoison, "~> 1.5"},
-      {:ex_http, "~>0.0.1"},
+      # {:ex_http, "~>0.0.1"},
 
       # Utils
       {:ex_struct_translator, "~> 0.1.1"},

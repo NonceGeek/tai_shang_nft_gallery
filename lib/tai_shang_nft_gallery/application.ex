@@ -18,7 +18,8 @@ defmodule TaiShangNftGallery.Application do
       TaiShangNftGalleryWeb.Endpoint,
       # Start a worker by calling: TaiShangNftGallery.Worker.start_link(arg)
       # {TaiShangNftGallery.Worker, arg}
-      {SyncerServer, [nft_contract_id: 1]} # start to sync the default_nft_contract
+      Supervisor.child_spec({SyncerServer, [nft_contract_id: 1]}, id: :web3_dev),
+      # Supervisor.child_spec({SyncerServer, [nft_contract_id: 2]}, id: :map_nft),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

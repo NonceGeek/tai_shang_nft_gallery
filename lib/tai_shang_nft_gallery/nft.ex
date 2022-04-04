@@ -102,7 +102,6 @@ defmodule TaiShangNftGallery.Nft do
         end
       rescue
         error ->
-          IO.puts inspect error
           Repo.rollback("reason: #{inspect(error)}")
       end
     end)

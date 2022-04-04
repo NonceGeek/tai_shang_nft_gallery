@@ -5,6 +5,13 @@ nft_contract =
   |> NftContract.get_by_id()
   |> NftContract.preload(:deep)
 
+map_nft_contract =
+  2
+  |> NftContract.get_by_id()
+  |> NftContract.preload(:deep)
+
+chain_polygon = Chain.get_by_id(2)
+
 tx_claim_exp =
   %{
     from: "0xfabccb7a695935b5b23a2fee664ff766f31c2d23",

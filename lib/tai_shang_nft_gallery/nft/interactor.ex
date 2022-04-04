@@ -17,7 +17,6 @@ defmodule TaiShangNftGallery.Nft.Interactor do
   }
 
 
-
   def get_token_info(%{endpoint: endpoint}, contract_addr, token_id) do
     data =
       get_data(

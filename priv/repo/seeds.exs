@@ -10,6 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+# --- init moonbeam chain ---
 alias TaiShangNftGallery.Chain
 
 {:ok, %{id: chain_id}} =
@@ -24,11 +25,11 @@ alias TaiShangNftGallery.Chain
 
 alias TaiShangNftGallery.NftContract
 
-# --- init web3dev nft
+# --- init web3dev nft ---
 
 description =
   "Web3DevNFT has the following uses:\n\n"
-  |> Kernel.<>("**0x01)** the Label NFT for Web3Dev@NonceGeek\n\n")
+  |> Kernel.<>("**0x01)** the badge NFT for Web3Dev@NonceGeek\n\n")
   |> Kernel.<>("**0x02)** one of the Character for TaiShangVerse@NonceGeek")
 abi =
   "contracts/web3dev.abi"
@@ -39,6 +40,7 @@ alias TaiShangNftGallery.ContractABI
 
 {:ok, %{id: id}} =
   ContractABI.create(%{abi: abi})
+
 NftContract.create(%{
   name: "Web3Dev",
   type: "Web3Dev",
@@ -48,8 +50,39 @@ NftContract.create(%{
   chain_id: chain_id
 })
 
+# --- init polygon chain ---
+
+{:ok, %{id: chain_id_polygon}} =
+  Chain.create(%{
+    name: "Polygon",
+    endpoint: "https://polygon-rpc.com",
+    info: %{
+      contract: "https://polygonscan.com/address/",
+      api_explorer: "https://api.polygonscan.com/",
+    }
+  })
+
 # --- init map nft
 
+description_map_nft =
+  "TaiShangMapGenerator:\n\n"
+  |> Kernel.<>("The Maps in TaiShangVerse\n\n")
+abi =
+  "contracts/map_nft.abi"
+  |> File.read!()
+  |> Poison.decode!()
+
+{:ok, %{id: id_map_nft}} =
+  ContractABI.create(%{abi: abi})
+
+NftContract.create(%{
+    name: "TaiShangMapGenerator",
+    type: "MapNft",
+    addr: "0x9c0C846705E95632512Cc8D09e24248AbFd6D679",
+    description: description_map_nft,
+    contract_abi_id: id_map_nft,
+    chain_id: chain_id_polygon
+  })
 
 # --- init badges
 

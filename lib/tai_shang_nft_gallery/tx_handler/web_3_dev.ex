@@ -1,29 +1,28 @@
 defmodule TaiShangNftGallery.TxHandler.Web3Dev do
   alias TaiShangNftGallery.Nft
   alias TaiShangNftGallery.Nft.Interactor
-  alias Utils.TypeTranslator
+  alias TaiShangNftGallery.TxHandler.NftUtils
 
   require Logger
-  def handle_tx(chain, nft_contract, from, to, value,
+  def handle_tx(chain, _hash, nft_contract, from, to, value,
     {%{function: func_name}, data})  do
+    # no nessary to handle receipt.
       do_handle_tx(
         func_name,
         nft_contract, from, to, value, data, chain
       )
   end
 
-  def handle_tx(_chain, _nft_contract, _from, _to, _value, _others) do
+  def handle_tx(_chain, _hash, _nft_contract, _from, _to, _value, _others) do
     :pass
   end
 
-  def do_handle_tx(func, _nft_contract, from, _to, _value,
-    [_from_bin, to_bin, token_id], _chain) when
+  # Util Funcs
+  def do_handle_tx(func, nft_contract, from, to, value,
+    [from_bin, to_bin, token_id], chain) when
     func in ["safeTransferFrom", "transferFrom"] do
-    # Change Owner
-    to_str = TypeTranslator.bin_to_addr(to_bin)
-    Logger.info("Transfer NFT from #{from} to #{to_str}")
-    nft = Nft.get_by_token_id(token_id)
-    Nft.update(nft, %{token_id: token_id, owner: to_str})
+      NftUtils.handle_tx(func, nft_contract, from, to, value,
+        [from_bin, to_bin, token_id], chain)
   end
 
   def do_handle_tx("claim", %{id: nft_c_id, addr: addr}, from, _to, _value, [token_id], chain) do
