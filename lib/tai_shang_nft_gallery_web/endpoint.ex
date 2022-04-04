@@ -46,5 +46,6 @@ defmodule TaiShangNftGalleryWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug Pow.Plug.Session, otp_app: :tai_shang_nft_gallery
   plug TaiShangNftGalleryWeb.Router
 end

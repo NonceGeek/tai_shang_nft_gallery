@@ -1,0 +1,50 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="airdrop-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :chain_id %>
+    <%= select f, :chain_id, @chains %>
+    <%= error_tag f, :chain_id %>
+
+    <%= label f, :description %>
+    <%= text_input f, :description %>
+    <%= error_tag f, :description %>
+  
+    <%= label f, :related_link %>
+    <%= text_input f, :related_link %>
+    <%= error_tag f, :related_link %>
+  
+    <%= label f, :sum %>
+    <%= number_input f, :sum %>
+    <%= error_tag f, :sum %>
+  
+    <%= label f, :paid_for %>
+    <a class="add-form-field" phx-target={@myself} phx-click="add_paid_for" title="Add Paid">Add Paid</a>
+    <%= live_component TaiShangNftGalleryWeb.AirdropLive.PaidForInput,
+      airdrop: @airdrop,
+      target: @myself,
+      editable: true
+    %>
+    <%= error_tag f, :paid_for %>
+  
+    <%= label f, :tx_ids %>
+    <a class="add-form-field" phx-target={@myself} phx-click="add_tx_id" title="Add Transaction">Add Transaction</a>
+    <%= live_component TaiShangNftGalleryWeb.AirdropLive.ListOfStringInput,
+      airdrop: @airdrop,
+      target: @myself,
+      editable: true
+    %>
+    <%= error_tag f, :tx_ids %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>
