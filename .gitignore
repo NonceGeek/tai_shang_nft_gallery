@@ -33,3 +33,5 @@ tai_shang_nft_gallery-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# any files including secret
+*secret*
