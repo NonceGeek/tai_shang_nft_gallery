@@ -19,6 +19,3 @@
     <%= submit "Sign in" %>
   </div>
 <% end %>
-
-
-<span><%= link "Register", to: Routes.pow_registration_path(@conn, :new) %></span>
