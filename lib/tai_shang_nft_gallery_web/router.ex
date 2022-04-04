@@ -35,6 +35,7 @@ defmodule TaiShangNftGalleryWeb.Router do
 
     live "/", IndexLive, :index
     live "/addr", AddrLive, :index
+    live "/map_gen", MapGenLive, :index
   end
 
   scope "/airdrops", TaiShangNftGalleryWeb do
