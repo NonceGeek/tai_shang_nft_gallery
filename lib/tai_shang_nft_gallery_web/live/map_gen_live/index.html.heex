@@ -35,11 +35,15 @@
                         <%=raw(nft.uri["img_parsed"]) %>
                         <div class="card-body">
                         <a target="_blank" href={"#{@world_gen_link}"}>
-                        <button
-                        type="button"
-                        >
-                            View in TaiShangWorldGenerator!
-                        </button>
+                            <button type="button">
+                                View in TaiShangWorldGenerator!
+                            </button>
+                        </a>
+                        <br><br>
+                        <a target="_blank" href={"#{@opensea_polygon_link}/#{@nft_contract.addr}/#{nft.token_id}"}>
+                            <button type="button">
+                                View on Opeansea
+                            </button>
                         </a>
                         <br><br>
                         <%= raw(Earmark.as_html!(

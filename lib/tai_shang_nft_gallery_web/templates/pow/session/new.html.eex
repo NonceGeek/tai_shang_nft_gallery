@@ -14,7 +14,7 @@
   <%= label f, :password %>
   <%= password_input f, :password %>
   <%= error_tag f, :password %>
-
+  <br><br>
   <div>
     <%= submit "Sign in" %>
   </div>

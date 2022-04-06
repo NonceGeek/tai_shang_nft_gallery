@@ -2,6 +2,7 @@ defmodule TaiShangNftGalleryWeb.MapGenLive.Index do
   use TaiShangNftGalleryWeb, :live_view
   alias TaiShangNftGallery.{Nft, NftContract}
   @world_gen_link "https://welightproject.github.io/tai_shang_world_generator/"
+  @opensea_polygon_link "https://opensea.io/assets/matic"
 
   @impl true
   def mount(_params, _session, socket) do
@@ -53,5 +54,6 @@ defmodule TaiShangNftGalleryWeb.MapGenLive.Index do
     |> assign(nft_num: nft_num)
     |> assign(nfts: nfts)
     |> assign(world_gen_link: @world_gen_link)
+    |> assign(opensea_polygon_link: @opensea_polygon_link)
   end
 end

@@ -10,10 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+
 # --- init moonbeam chain ---
 alias TaiShangNftGallery.Chain
-alias TaiShangNftGallery.Airdrop
-alias TaiShangNftGallery.Users.User
+# alias TaiShangNftGallery.Airdrop
 
 {:ok, %{id: chain_id}} =
   Chain.create(%{
@@ -159,48 +159,47 @@ Badge.create(
   }
 )
 
-Airdrop.create(%{
-  description: "Testing 1",
-  related_link: "Link 1",
-  sum: 100,
-  paid_for: [
-    %{
-      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
-      money: 5,
-      unit: "usdc"
-    },
-    %{
-      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
-      money: 10,
-      unit: "usdc"
-    }
-  ],
-  tx_ids: ["tx1", "tx2"],
-  chain_id: chain_id
-})
+# Airdrop.create(%{
+#   description: "Testing 1",
+#   related_link: "Link 1",
+#   sum: 100,
+#   paid_for: [
+#     %{
+#       addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
+#       money: 5,
+#       unit: "usdc"
+#     },
+#     %{
+#       addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
+#       money: 10,
+#       unit: "usdc"
+#     }
+#   ],
+#   tx_ids: ["tx1", "tx2"],
+#   chain_id: chain_id
+# })
 
-Airdrop.create(%{
-  description: "Testing 2",
-  related_link: "Link 2",
-  sum: 200,
-  paid_for: [
-    %{
-      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
-      money: 15,
-      unit: "usdc"
-    },
-    %{
-      addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
-      money: 20,
-      unit: "usdc"
-    }
-  ],
-  tx_ids: ["tx3", "tx4"],
-  chain_id: chain_id
-})
+# Airdrop.create(%{
+#   description: "Testing 2",
+#   related_link: "Link 2",
+#   sum: 200,
+#   paid_for: [
+#     %{
+#       addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026A1d",
+#       money: 15,
+#       unit: "usdc"
+#     },
+#     %{
+#       addr: "0x73c7448760517E3E6e416b2c130E3c6dB2026bc3",
+#       money: 20,
+#       unit: "usdc"
+#     }
+#   ],
+#   tx_ids: ["tx3", "tx4"],
+#   chain_id: chain_id
+# })
 
-User.create_admin(%{
-  email: "chengusky@gmail.com",
-  password: "1234567890",
-  password_confirmation: "1234567890"
-})
+secret_seeds = "priv/repo/secret.seeds.exs"
+if File.exists?(secret_seeds) do
+  Code.eval_file(secret_seeds)
+end
