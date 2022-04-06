@@ -47,6 +47,13 @@
 
             </li>
             <li>
+              <%= if Pow.Plug.current_user(@conn) do %>
+                <span><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></span>
+              <% else %>
+                <span><%= link "Sign in", to: Routes.pow_session_path(@conn, :new) %></span>
+              <% end %>
+            </li>
+            <li>
               v1.0.0
             </li>
           </ul>

@@ -93,29 +93,25 @@
 <hr>
 <center><h1>Airdrops for NFT Hodlers!</h1></center>
 <table>
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Related link</th>
-      <th>Sum</th>
-      <th>
-        <table style="margin: 0">
-          <thead>
-            <th><td colspan="3">Paid for</td></th>
-          </thead>
+  <tbody id="airdrops">
+    <tr style="font-weight: bold">
+      <td>Description</td>
+      <td>Related link</td>
+      <td>Sum</td>
+      <td>
+        <table>
           <tbody>
+            <tr><td colspan="3" style="text-align: center;">Paid for</td></tr>
             <tr>
-              <td>Addr</td>
-              <td>Money</td>
-              <td>Unit</td>
+              <td width="30px">Unit</td>
+              <td width="200px">Addr</td>
+              <td width="70px">Money</td>
             </tr>
           </tbody>
         </table>
-      </th>
-      <th>Tx ids</th>
+      </td>
+      <td>Tx ids</td>
     </tr>
-  </thead>
-  <tbody id="airdrops">
     <%= for airdrop <- @airdrops do %>
       <tr id={"airdrop-#{airdrop.id}"}>
         <td><%= airdrop.description %></td>
@@ -126,9 +122,9 @@
             <tbody>
             <%= for paid <- airdrop.paid_for do %>
               <tr>
-                <td><%= paid["addr"] %></td>
-                <td><%= paid["money"] %></td>
-                <td><%= paid["unit"] %></td>
+                <td width="30px"><%= paid["unit"] %></td>
+                <td width="200px"><%= paid["addr"] %></td>
+                <td width="70px"><%= paid["money"] %></td>
               </tr>
             <% end %>
             </tbody>
