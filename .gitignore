@@ -35,3 +35,4 @@ npm-debug.log
 
 # any files including secret
 *secret*
+.envrc
