@@ -35,7 +35,7 @@ defmodule TaiShangNftGalleryWeb.Router do
 
     live "/", IndexLive, :index
     live "/addr", AddrLive, :index
-    live "/map_gen", MapGenLive, :index
+    live "/map_gen", MapGenLive.Index, :index
   end
 
   scope "/airdrops", TaiShangNftGalleryWeb do
@@ -47,6 +47,12 @@ defmodule TaiShangNftGalleryWeb.Router do
 
     live "/:id", AirdropLive.Show, :show
     live "/:id/show/edit", AirdropLive.Show, :edit
+  end
+
+  scope "/map_gen", TaiShangNftGalleryWeb do
+    pipe_through [:browser, :protected, :admin]
+
+    live "/edit", MapGenLive.Edit, :edit
   end
 
   # Other scopes may use custom stacks.

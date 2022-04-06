@@ -1,0 +1,62 @@
+<%= form_for :search_f, "#", [phx_submit: :search, class: "d-flex"], fn _f -> %>
+    <input name="addr" class="form-control me-2" type="search" placeholder="Enter Ur/Someone Addr to See U/Someone got" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Enter↵</button>
+<%end%>
+<div style="width:100%;float:left;">
+    <div>
+        <h3>Basic Info of NFT</h3>
+        <p><b>NAME: </b><%= @nft_contract.name%></p>
+        <p>
+            <b>ADDR: </b>
+            <a href={"#{@nft_contract.chain.info["contract"]}#{@nft_contract.addr}" }>
+                <%= @nft_contract.addr%>
+            </a>
+        </p>
+        <p><b> NFT NUMBER: </b>
+            <%= @nft_num %>
+        </p>
+        <p><b> NETWORK: </b>
+            <%= @nft_contract.chain.name%>
+        </p>
+        <p><b> DESCRIPTION: </b>
+        
+            <%= raw(Earmark.as_html!(
+                @nft_contract.description
+            ))%>
+        </p>
+    </div>
+    <hr>
+    <!--cards group-->
+    <br>
+            <%= for  nfts_group <- Enum.chunk_every(@nfts, 5) do%>
+            <div class = "card-outframe">
+                <%= for nft <- nfts_group do%>
+                    <div class="card">
+                        <%=raw(nft.uri["img_parsed"]) %>
+                        <div class="card-body">
+                        <a target="_blank" href={"#{@world_gen_link}"}>
+                        <button
+                        type="button"
+                        >
+                            View in TaiShangWorldGenerator!
+                        </button>
+                        </a>
+                        <br><br>
+                        <%= raw(Earmark.as_html!(
+                            "
+- **token id:**#{nft.token_id}
+- **owner:** #{nft.owner}
+- **block height:** #{nft.info["block_height"]}
+- **description in nft:** #{nft.info["token_info"]}
+- **addtional description:** #{nft.info["description"]}
+"
+                            ))%>
+
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+            <% end %>
+
+    <br>
+</div>

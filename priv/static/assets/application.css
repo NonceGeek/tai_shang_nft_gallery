@@ -1,0 +1,49 @@
+#the_nav {
+    width:80%;
+    margin: 0 auto;
+}
+
+.nav-item.active {width: 150px}
+.card-outframe {
+    width: 100%;
+    float:left;
+    display: flex;
+}
+.card {
+    width: 50%;
+    margin: 0 auto;
+    align-items: center;
+}
+.card .component {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+}
+.component {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    width: 300px;
+    height: 300px;
+    margin-top: 20px;
+}
+.card-a {all: unset; cursor:pointer;}
+.card-body {text-align: left;}
+.card-a:link {
+    color: black; text-decoration: none
+}
+.card-a:visited {
+    color: black; text-decoration: none
+}
+.card-a:active {
+    color: black; text-decoration: none
+}
+.card-a:hover {
+    color: black; text-decoration: none
+}
+.color-setter {
+    width: 100px !important;
+}

@@ -5,6 +5,7 @@ defmodule TaiShangNftGallery.NftContract do
   alias TaiShangNftGallery.Repo
   alias TaiShangNftGallery.Chain
   alias TaiShangNftGallery.ContractABI
+  alias TaiShangNftGallery.Nft
 
   schema "nft_contract" do
     field :name, :string
@@ -15,6 +16,8 @@ defmodule TaiShangNftGallery.NftContract do
 
     belongs_to :chain, Chain
     belongs_to :contract_abi, ContractABI
+
+    has_many :nfts, Nft
 
     timestamps()
   end
@@ -31,6 +34,9 @@ defmodule TaiShangNftGallery.NftContract do
     Repo.preload(ele, [:chain, :contract_abi])
   end
 
+  def preload(ele, :nfts) do
+    Repo.preload(ele, [:nfts])
+  end
   def get_by_id(id) do
     Repo.get_by(Ele, id: id)
   end

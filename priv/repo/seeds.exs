@@ -67,9 +67,7 @@ NftContract.create(%{
 
 # --- init map nft
 
-description_map_nft =
-  "TaiShangMapGenerator:\n\n"
-  |> Kernel.<>("The Maps in TaiShangVerse\n\n")
+description_map_nft = "The Maps in TaiShangVerse"
 abi =
   "contracts/map_nft.abi"
   |> File.read!()
