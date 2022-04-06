@@ -70,9 +70,10 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
       |> NftContract.preload()
     hodler_num =
       Nft.count(id)
-    nft = Nft.get_by_token_id_and_nft_contract_id(
-      1, id
-    )
+    nft =
+      1
+      |> Nft.get_by_token_id_and_nft_contract_id(id)
+      |> Nft.preload()
     badge_names =
       Badge.get_all()
       |> Enum.map(&(&1.name))

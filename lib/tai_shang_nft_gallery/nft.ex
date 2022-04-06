@@ -46,10 +46,15 @@ defmodule TaiShangNftGallery.Nft do
 
   def get_by_token_id_and_nft_contract_id(token_id, nft_contract_id) do
     if token_id <= @int_limit do
-      Ele
-      |> where([n], n.token_id == ^token_id and n.nft_contract_id == ^nft_contract_id)
-      |> Repo.all()
-      |> Enum.fetch!(0)
+      try do
+        Ele
+        |> where([n], n.token_id == ^token_id and n.nft_contract_id == ^nft_contract_id)
+        |> Repo.all()
+        |> Enum.fetch!(0)
+      rescue
+        _ ->
+          nil
+      end
     else
       nil
     end

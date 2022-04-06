@@ -29,7 +29,7 @@ defmodule TaiShangNftGallery.TxHandler.Web3Dev do
     # INIT Token
     uri = Interactor.get_token_uri(chain, addr, token_id)
 
-    if is_nil(Nft.get_by_token_id(token_id)) == true do
+    if is_nil(Nft.get_by_token_id_and_nft_contract_id(token_id, nft_c_id)) == true do
       Nft.create(
         %{
           uri: uri,
