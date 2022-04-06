@@ -20,6 +20,7 @@ defmodule TaiShangNftGallery.Nft.Syncer do
   end
 
   def do_sync(%{name: name} = chain, %{addr: addr} = nft_contract, last_block, best_block) do
+    Logger.info(@api_keys[name])
     {:ok, %{"result" => txs}}=
       ScanInteractor.get_txs_by_contract_addr(
         chain,
