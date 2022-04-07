@@ -1,0 +1,61 @@
+<h1>Listing Nfts</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.nft_index_path(@socket, :index)}>
+    <.live_component
+      module={TaiShangNftGalleryWeb.NftLive.FormComponent}
+      id={@nft.id || :new}
+      title={@page_title}
+      action={@live_action}
+      nft={@nft}
+      return_to={Routes.nft_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <tbody id="nfts">
+    <tr style="font-weight: bold">
+      <td>Token</td>
+      <td>Owner</td>
+      <td>
+        <table>
+          <tbody>
+            <tr><td colspan="3" style="text-align: center;">Info</td></tr>
+            <tr>
+              <td width="40px">Block Height</td>
+              <td width="70px">Token Info</td>
+              <td width="200px">Description</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+
+      <td></td>
+    </tr>
+    <%= for nft <- @nfts do %>
+      <tr id={"nft-#{nft.id}"}>
+        <td><%= nft.token_id %></td>
+        <td><%= nft.owner %></td>
+        <td>
+          <%= if nft.info != nil do %>
+          <table>
+            <tbody>
+              <tr>
+                <td width="40px"><%= nft.info["block_height"] %></td>
+                <td width="70px"><%= nft.info["token_info"] %></td>
+                <td width="200px"><%= nft.info["description"] %></td>
+              </tr>
+            </tbody>
+          </table>
+          <% end %>
+        </td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.nft_show_path(@socket, :show, nft) %></span>
+          <span><%= live_patch "Edit", to: Routes.nft_index_path(@socket, :edit, nft) %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

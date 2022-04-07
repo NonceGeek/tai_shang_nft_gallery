@@ -49,6 +49,16 @@ defmodule TaiShangNftGalleryWeb.Router do
     live "/:id/show/edit", AirdropLive.Show, :edit
   end
 
+  scope "/nfts", TaiShangNftGalleryWeb do
+    pipe_through [:browser, :protected, :admin]
+
+    live "/", NftLive.Index, :index
+    live "/:id/edit", NftLive.Index, :edit
+
+    live "/:id", NftLive.Show, :show
+    live "/:id/show/edit", NftLive.Show, :edit
+  end
+
   scope "/map_gen", TaiShangNftGalleryWeb do
     pipe_through [:browser, :protected, :admin]
 
