@@ -171,6 +171,15 @@ defmodule TaiShangNftGallery.Nft do
     end
   end
 
+  def update(%Ele{} = ele, %{"info" => %{"description" => description}} = attrs) do
+    new_info = Map.put(ele.info, "description", description)
+    attrs = Map.put(attrs, "info", new_info)
+
+    ele
+    |> changeset(attrs)
+    |> Repo.update()
+  end
+
   def changeset(%Ele{} = ele) do
     Ele.changeset(ele, %{})
   end

@@ -1,0 +1,53 @@
+<h1>Show Nft</h1>
+
+<style>
+svg {
+  width: 30%;
+  margin: 10px;
+}
+</style>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.nft_show_path(@socket, :show, @nft)}>
+    <.live_component
+      module={TaiShangNftGalleryWeb.NftLive.FormComponent}
+      id={@nft.id}
+      title={@page_title}
+      action={@live_action}
+      nft={@nft}
+      return_to={Routes.nft_show_path(@socket, :show, @nft)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Token:</strong>
+    <%= @nft.token_id %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @nft.owner %>
+  </li>
+
+  <li>
+    <strong>Info:</strong>
+    <%= if @nft.info != nil do %>
+    <ul>
+      <li><%= @nft.info["block_height"] %></li>
+      <li><%= @nft.info["token_info"] %></li>
+      <li><%= @nft.info["description"] %></li>
+    </ul>
+    <% end %>
+  </li>
+
+</ul>
+
+<%= raw(@nft.uri["img_parsed"]) %>
+
+<div>
+  <span><%= live_patch "Edit", to: Routes.nft_show_path(@socket, :edit, @nft), class: "button" %></span> |
+  <span><%= live_redirect "Back", to: Routes.nft_index_path(@socket, :index) %></span>
+</div>
