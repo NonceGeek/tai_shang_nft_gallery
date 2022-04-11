@@ -71,21 +71,27 @@ defmodule TaiShangNftGallery.Nft.Interactor do
   end
 
   def get_token_uri(%{endpoint: endpoint}, contract_addr, token_id) do
+    endpoint
+    |> do_get_token_uri(contract_addr, token_id)
+    |> Parser.parse_token_uri()
+  end
+
+  def get_token_uri(%{endpoint: endpoint}, contract_addr, token_id, :external_link) do
+    endpoint
+    |> do_get_token_uri(contract_addr, token_id)
+    |> Parser.parse_token_uri(:external_link)
+  end
+
+  def do_get_token_uri(endpoint, contract_addr, token_id) do
     data =
       get_data(
         @func.token_uri,
         [token_id]
       )
 
-    # result =
-    #   Ethereumex.HttpClient.eth_call(%{
-    #     data: data,
-    #     to: contract_addr
-    #   }, @default_param_in_call, url: endpoint)
     data
     |> eth_call_repeat(contract_addr, @default_param_in_call, endpoint)
     |> TypeTranslator.data_to_str()
-    |> Parser.parse_token_uri()
   end
 
   def eth_call_repeat(data, contract_addr, func_name, endpoint) do

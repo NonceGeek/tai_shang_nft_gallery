@@ -19,6 +19,12 @@ defmodule TaiShangNftGallery.Nft.Parser do
     %{payload: payload, img_parsed: img_parsed}
   end
 
+  def parse_token_uri(payload_raw, :external_link) do
+    %{image: image} =
+      payload =
+        URIHandler.decode_uri(payload_raw)
+    %{payload: payload, img_parsed: image}
+  end
   def get_nums_in_svg(img_parsed) do
     value =
       img_parsed

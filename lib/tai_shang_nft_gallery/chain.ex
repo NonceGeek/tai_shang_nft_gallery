@@ -8,6 +8,7 @@ defmodule TaiShangNftGallery.Chain do
     field :name, :string
     field :endpoint, :string
     field :info, :map
+    field :syncer_type, :string, default: "explorer_api"
     timestamps()
   end
 
@@ -42,7 +43,7 @@ defmodule TaiShangNftGallery.Chain do
   @doc false
   def changeset(%Ele{} = ele, attrs) do
     ele
-    |> cast(attrs, [:name, :endpoint, :info])
+    |> cast(attrs, [:name, :endpoint, :info, :syncer_type])
     |> unique_constraint(:name)
   end
 end

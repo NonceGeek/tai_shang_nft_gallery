@@ -26,10 +26,7 @@ defmodule TaiShangNftGallery.SyncerServer do
 
   def handle_info(:init,  [nft_contract_id: nft_contract_id]) do
     Logger.info("SyncerServer started yet.")
-    nft_contract =
-      nft_contract_id
-      |> NftContract.get_by_id()
-      |> NftContract.preload()
+
       state =
         [nft_contract_id: nft_contract_id]
 

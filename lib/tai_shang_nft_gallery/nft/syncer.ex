@@ -2,13 +2,19 @@ defmodule TaiShangNftGallery.Nft.Syncer do
   alias TaiShangNftGallery. NftContract
   alias TaiShangNftGallery.TxHandler
   alias TaiShangNftGallery.Chain.Fetcher
-  alias TaiShangNftGallery.ScanInteractor
+  alias TaiShangNftGallery.{ScanInteractor, NodeInteractor}
   require Logger
 
   @api_keys %{
     "Moonbeam" => System.get_env("MOONBEAM_API_KEY"),
     "Polygon" => System.get_env("POLYGON_API_KEY"),
   }
+
+  @doc """
+           syncer_type
+    sync --------->  explorer_api --> do_sync
+             |---->  node_api     --> do_sync
+  """
   def sync(chain, %{last_block: last_block} = nft_contract) do
 
     best_block = Fetcher.get_block_number(chain)
@@ -17,6 +23,20 @@ defmodule TaiShangNftGallery.Nft.Syncer do
       nft_contract,
       %{last_block: best_block + 1}
     )
+  end
+
+  def do_sync(%{
+    syncer_type: "node_api"
+  } = chain, %{addr: addr} = nft_contract, last_block, best_block) do
+    txs =
+      NodeInteractor.get_txs_by_contract_addr(
+        chain,
+        addr,
+        last_block,
+        best_block
+      )
+
+    handle_txs(chain, nft_contract, txs)
   end
 
   def do_sync(%{name: name} = chain, %{addr: addr} = nft_contract, last_block, best_block) do
@@ -31,6 +51,8 @@ defmodule TaiShangNftGallery.Nft.Syncer do
       )
     handle_txs(chain, nft_contract, txs)
   end
+
+
 
   def handle_txs(chain, nft_contract, txs) do
     Enum.each(txs, fn tx ->

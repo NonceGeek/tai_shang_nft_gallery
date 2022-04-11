@@ -51,4 +51,8 @@ defmodule Utils.TypeTranslator do
   def bin_to_addr(bin) do
     "0x" <> Base.encode16(bin, case: :lower)
   end
+
+  def int_to_hex(int) do
+    "0x" <> String.downcase(Integer.to_string(int, 16))
+  end
 end
