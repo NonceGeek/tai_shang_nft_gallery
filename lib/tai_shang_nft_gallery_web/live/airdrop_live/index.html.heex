@@ -39,7 +39,8 @@
     <%= for airdrop <- @airdrops do %>
       <tr id={"airdrop-#{airdrop.id}"}>
         <td><%= airdrop.description %></td>
-        <td><%= airdrop.related_link %></td>
+        <td><a href={"#{airdrop.related_link}"}>related_link</a>
+        </td>
         <td><%= airdrop.sum %></td>
         <td>
           <table>

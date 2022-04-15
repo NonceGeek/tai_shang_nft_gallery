@@ -119,7 +119,8 @@
     <%= for airdrop <- @airdrops do %>
       <tr id={"airdrop-#{airdrop.id}"}>
         <td><%= airdrop.description %></td>
-        <td><%= airdrop.related_link %></td>
+        <td><a href={"#{airdrop.related_link}"}>related_link</a>
+        </td>
         <td><%= airdrop.sum %></td>
         <td>
           <table>
@@ -143,6 +144,11 @@
           <% end %>
         </td>     
         <td><%= airdrop.chain.name %></td>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.airdrop_show_path(@socket, :show, airdrop) %></span>
+          <span><%= live_patch "Edit", to: Routes.airdrop_index_path(@socket, :edit, airdrop) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: airdrop.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
       </tr>
     <% end %>
   </tbody>
