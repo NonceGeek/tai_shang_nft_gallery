@@ -92,6 +92,7 @@
 <div style="width:100%;">
 <hr>
 <center><h1>Airdrops for NFT Hodlers!</h1></center>
+
 <table>
   <tbody id="airdrops">
     <tr style="font-weight: bold">
@@ -111,6 +112,9 @@
         </table>
       </td>
       <td>Tx ids</td>
+      <td>Chain</td>
+
+      <td></td>
     </tr>
     <%= for airdrop <- @airdrops do %>
       <tr id={"airdrop-#{airdrop.id}"}>
@@ -130,7 +134,15 @@
             </tbody>
           </table>
         </td>
-        <td><%= raw(Enum.join(Enum.map(airdrop.tx_ids, fn tx_id -> "<a href=\"#{@nft_contract.chain.info["tx"] <> tx_id}\">#{tx_id}</a>" end), "<br><br>")) %></td>
+        <td>
+          <%= for tx_id <- airdrop.tx_ids do%>
+            
+            <a href={"#{airdrop.chain.info["tx"]}/#{tx_id}"}><%=tx_id %></a>
+            <br><br>
+            
+          <% end %>
+        </td>     
+        <td><%= airdrop.chain.name %></td>
       </tr>
     <% end %>
   </tbody>

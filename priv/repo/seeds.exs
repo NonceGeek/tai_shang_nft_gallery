@@ -62,6 +62,7 @@ NftContract.create(%{
     info: %{
       contract: "https://polygonscan.com/address/",
       api_explorer: "https://api.polygonscan.com/",
+      tx: "https://polygonscan.com/tx/"
     }
   })
 

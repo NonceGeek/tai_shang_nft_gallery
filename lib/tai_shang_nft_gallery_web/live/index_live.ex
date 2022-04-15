@@ -82,7 +82,7 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
       |> Badge.get_by_name()
       |> Badge.preload([:token_id, :owner])
     airdrops =
-      Airdrop.list_by_chain_id(nft_contract.chain.id)
+      Airdrop.list()
 
     socket
     |> assign(nft_selected: nft)

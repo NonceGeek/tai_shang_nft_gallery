@@ -54,7 +54,14 @@
             </tbody>
           </table>
         </td>
-        <td><%= raw(Enum.join(Enum.map(airdrop.tx_ids, fn tx_id -> "<a href=\"#{airdrop.chain.info["tx"] <> tx_id}\">#{tx_id}</a>" end), "<br><br>")) %></td>
+        <td>
+          <%= for tx_id <- airdrop.tx_ids do%>
+            
+            <a href={"#{airdrop.chain.info["tx"]}/#{tx_id}"}><%=tx_id %></a>
+            <br><br>
+            
+          <% end %>
+        </td>     
         <td><%= airdrop.chain.name %></td>
         <td>
           <span><%= live_redirect "Show", to: Routes.airdrop_show_path(@socket, :show, airdrop) %></span>
