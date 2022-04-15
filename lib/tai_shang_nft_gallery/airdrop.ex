@@ -11,7 +11,7 @@ defmodule TaiShangNftGallery.Airdrop do
     field :description, :string
     field :paid_for, {:array, :map}, default: []
     field :related_link, :string
-    field :sum, :integer
+    field :sum, :float
     field :tx_ids, {:array, :string}, default: []
     belongs_to :chain, Chain
 
