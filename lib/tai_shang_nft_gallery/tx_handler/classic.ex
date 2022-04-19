@@ -27,7 +27,6 @@ defmodule TaiShangNftGallery.TxHandler.Classic do
   end
 
   def do_handle_tx("mint", %{id: nft_c_id, addr: addr} = nft_contract, from, _to, _value, _params, tx_hash, chain) do
-    IO.puts "l"
     token_id = get_token_id(chain, nft_contract, tx_hash)
     uri = Interactor.get_token_uri(chain, addr, token_id, :external_link)
     Nft.create(

@@ -52,7 +52,6 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
 
     uri_handled
       = handle_uri(socket.assigns.nft_selected.uri, render_way)
-    IO.puts inspect uri_handled
     {
       :noreply,
       socket
@@ -123,7 +122,6 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
   # ---
 
   def handle_uri(%{"payload" => %{"image" => img}}, "laydowncat") do
-    IO.puts img
     {:ok, %{"result" => %{"image" => uri_handled}}} =
     ExHttp.post(@url, %{
       params: [img, "https://gallery.noncegeek.com/images/"]
