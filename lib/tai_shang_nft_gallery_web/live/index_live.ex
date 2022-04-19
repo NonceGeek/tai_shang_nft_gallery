@@ -3,6 +3,9 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
   alias TaiShangNftGallery.{Badge, Nft, NftContract, Airdrop}
 
   @default_badge "noncegeeker"
+  @render_ways ["laydowncat", "raw"]
+  @url "https://faasbyleeduckgo.gigalixirapp.com/api/v1/run?name=NftRender.NType&func_name=handle_svg"
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, init(socket)}
@@ -28,10 +31,14 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
       token_id
       |> String.to_integer()
       |> Nft.get_by_token_id()
+
+    uri_handled
+      = handle_uri(nft_selected.uri, socket.assigns.render_way)
     {
       :noreply,
       socket
       |> assign(nft_selected: nft_selected)
+      |> assign(uri_handled: uri_handled)
     }
   end
 
@@ -39,6 +46,19 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     payload = Nft.check_owner(addr)
     do_handle_event(payload, addr, socket)
 
+  end
+
+  def handle_event("change_render_way", %{"render_f" => %{"render_way" => render_way}}, socket) do
+
+    uri_handled
+      = handle_uri(socket.assigns.nft_selected.uri, render_way)
+    IO.puts inspect uri_handled
+    {
+      :noreply,
+      socket
+      |> assign(uri_handled: uri_handled)
+      |> assign(render_way: render_way)
+    }
   end
 
   def handle_event(_key, _value, socket) do
@@ -84,6 +104,8 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     airdrops =
       Airdrop.list()
 
+    uri_handled =
+      handle_uri(nft.uri, List.first(@render_ways))
     socket
     |> assign(nft_selected: nft)
     |> assign(nft_contract: nft_contract)
@@ -92,5 +114,21 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     |> assign(badges_name_selected: @default_badge)
     |> assign(badge_selected: badge_info_default)
     |> assign(airdrops: airdrops)
+    |> assign(uri_handled: uri_handled)
+    #---
+    |> assign(render_ways: @render_ways)
+    |> assign(render_way: List.first(@render_ways))
   end
+
+  # ---
+
+  def handle_uri(%{"payload" => %{"image" => img}}, "laydowncat") do
+    IO.puts img
+    {:ok, %{"result" => %{"image" => uri_handled}}} =
+    ExHttp.post(@url, %{
+      params: [img, "https://gallery.noncegeek.com/images/"]
+      })
+    uri_handled
+  end
+  def handle_uri(%{"img_parsed" => img_parsed}, "raw"), do: img_parsed
 end

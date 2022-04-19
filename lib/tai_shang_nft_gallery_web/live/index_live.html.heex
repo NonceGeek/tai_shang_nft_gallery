@@ -84,7 +84,13 @@
         <br>
         <b> RAW NFT URI: </b>
         <br>
-            <%=raw(@nft_selected.uri["img_parsed"]) %>
+        <%= raw(@uri_handled) %>
+        <br>
+        Render Ways:
+        <br>
+        <%= form_for :render_f, "#", [phx_change: :change_render_way], fn f -> %>
+          <%= select f, :render_way, @render_ways %>
+        <% end %>
     <%end%>
 </div>
 </div>
