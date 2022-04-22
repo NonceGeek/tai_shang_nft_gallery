@@ -124,9 +124,9 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
     |> Map.put("paid_for", paid_for_json)
   end
 
-  defp remove_empty_txn_id(airdrop_params) do
-    data = airdrop_params
-      |> Map.get("tx_ids")
+  defp remove_empty_txn_id(%{"tx_ids" => tx_ids} = airdrop_params) do
+    data =
+      tx_ids
       |> Enum.map(fn each ->
         String.trim(each)
       end)
@@ -135,6 +135,10 @@ defmodule TaiShangNftGalleryWeb.AirdropLive.FormComponent do
       end)
 
     Map.put(airdrop_params, "tx_ids", data)
+  end
+
+  defp remove_empty_txn_id(airdrop_params) do
+    Map.put(airdrop_params, "tx_ids", [])
   end
 
   defp convert_before_save(airdrop_params) do
