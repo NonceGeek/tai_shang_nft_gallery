@@ -82,9 +82,16 @@
             |> inspect()
             %>
         <br>
-        <b> RAW NFT URI: </b>
+        <b> NFT URI: </b>
         <br>
-        <%= raw(@uri_handled) %>
+          <%= case @uri_handled  do %>
+            <%= {:error, error_info} -> %>
+              <%= raw(@nft.uri) %>
+              <br>
+              <%= error_info %>
+            <% _ -> %>
+              <%= raw(@uri_handled) %>
+          <% end %>
         <br>
         Render Ways:
         <br>

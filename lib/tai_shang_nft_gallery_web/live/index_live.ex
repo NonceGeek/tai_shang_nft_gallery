@@ -122,11 +122,16 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
   # ---
 
   def handle_uri(%{"payload" => %{"image" => img}}, "laydowncat") do
-    {:ok, %{"result" => %{"image" => uri_handled}}} =
-    ExHttp.post(@url, %{
-      params: [img, "https://gallery.noncegeek.com/images/"]
-      })
-    uri_handled
+    try do
+      {:ok, %{"result" => %{"image" => uri_handled}}} =
+      ExHttp.post(@url, %{
+        params: [img, "https://gallery.noncegeek.com/images/"]
+        })
+      uri_handled
+    rescue
+       _ ->
+      {:error, "renderer service is down"}
+    end
   end
   def handle_uri(%{"img_parsed" => img_parsed}, "raw"), do: img_parsed
 end
