@@ -57,6 +57,7 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
       socket
       |> assign(uri_handled: uri_handled)
       |> assign(render_way: render_way)
+      |> assign(nft: socket.assigns.nft_selected)
     }
   end
 
@@ -117,6 +118,7 @@ defmodule TaiShangNftGalleryWeb.IndexLive do
     #---
     |> assign(render_ways: @render_ways)
     |> assign(render_way: List.first(@render_ways))
+    |> assign(nft: nft)
   end
 
   # ---

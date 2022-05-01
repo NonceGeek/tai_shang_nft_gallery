@@ -86,7 +86,7 @@
         <br>
           <%= case @uri_handled  do %>
             <%= {:error, error_info} -> %>
-              <%= raw(@nft.uri) %>
+              <%= raw(@nft.uri["img_parsed"]) %>
               <br>
               <%= error_info %>
             <% _ -> %>
