@@ -160,6 +160,12 @@ Badge.create(
   }
 )
 
+Badge.create(
+  %{
+    name: "sharer",
+    description: "share task for noncegeekDAO."
+  }
+)
 # Airdrop.create(%{
 #   description: "Testing 1",
 #   related_link: "Link 1",

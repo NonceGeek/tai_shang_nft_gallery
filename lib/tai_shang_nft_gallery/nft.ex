@@ -129,7 +129,7 @@ defmodule TaiShangNftGallery.Nft do
     |> Enum.each(&(NftBadge.delete(&1)))
 
     Enum.each(badges_map, fn {badge, times} ->
-      %{id: badge_id} = Badge.get_by_name(badge)
+      %{id: badge_id} = Badge.get_by_name(String.replace(badge, " ", ""))
 
       # repeat times
       Enum.each(1..times, fn _times ->
@@ -141,6 +141,7 @@ defmodule TaiShangNftGallery.Nft do
   end
 
   def update(ele, %{badges: badges_map} = attrs, :with_badges) do
+
     Repo.transaction(fn ->
       try do
         res =
@@ -149,6 +150,7 @@ defmodule TaiShangNftGallery.Nft do
           {:error, payload} ->
             # error handler
               Logger.error("update failed at update Nft!reason: #{inspect(payload)}")
+              Logger.info(inspect(ele))
               Repo.rollback("update failed at update Nft!reason: #{inspect(payload)}")
           {:ok, %{id: id}} ->
             handle_badges(badges_map, id)
@@ -156,6 +158,7 @@ defmodule TaiShangNftGallery.Nft do
       rescue
         error ->
           Logger.error("update failed at update NftBadge!reason: #{inspect(error)}")
+          Logger.info(inspect(ele))
           Repo.rollback("update failed at update NftBadge!reason: #{inspect(error)}")
       end
     end)
